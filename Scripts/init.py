@@ -12,8 +12,8 @@ old_timer = pygame.time.get_ticks()
 game_timer = pygame.time.get_ticks()
 
 #initialise font text
-GAME_FONT = pygame.freetype.Font("./assets/fonts/secrcode.ttf", 96)
-FONT = pygame.font.Font("./assets/fonts/secrcode.ttf", 96)
+GAME_FONT = pygame.font.Font("./assets/fonts/FUTRFW.TTF", 48)
+FONT = pygame.font.Font("./assets/fonts/FUTRFW.TTF", 48)
 FONT.set_bold(True)
 
 

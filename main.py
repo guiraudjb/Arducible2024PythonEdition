@@ -2,7 +2,7 @@ import pygame
 from pygame import *
 pygame.init()
 from Scripts.init import * # load config.ini and some variables
-from Scripts.Sprites import Cible,Background # load sprites
+from Scripts.Sprites import Cible,Background,BackgroudFrame # load sprites
 
 def init_game():
     global cible1
@@ -92,6 +92,7 @@ def draw_ellipse_angle(surface, color, rect, angle, width=0):
     
 
 #initialise background table
+introbackground = BackgroudFrame()
 ingamebackground = Background()
 
 #initialise webcam if actived in config.ini
@@ -170,21 +171,24 @@ while continuer:
                         sound_effects = False
                     else:
                         sound_effects = True
-                        if not channel1.get_busy():
-                            channel1.play(music, loops = -1)
+                        #if not channel1.get_busy():
+                        channel1.play(music, loops = -1)
                     
                         
                         
         
-        
-        ecran.blit(ingamebackground.image, ingamebackground.rect)
+        introbackground.update()
+        ecran.blit(introbackground.image, introbackground.rect)
 
-        Time_left_image = FONT.render( "Time left  : " + str(time_left), True, (0, 255, 0))
+        Time_left_image = FONT.render( "Time left  : " + str(time_left), True, (66, 236, 255))
+        Time_left_image_mask = GAME_FONT.render( "Time left  : " + str(time_left), True, (12, 152, 192))
         ecran.blit(Time_left_image,(10,10))
+        ecran.blit(Time_left_image_mask,(11,10))
         
-        High_score_image = FONT.render("High score : " + str(high_score), True, (0, 255, 0))
+        High_score_image = FONT.render("High score : " + str(high_score), True, (66, 236, 255))
         ecran.blit(High_score_image, (10,202))
-       
+        
+             
         pygame.display.flip()
         if time_left <= 0:
             next_gamestate()
@@ -256,8 +260,8 @@ while continuer:
                                 sound_effects = False
                         else:
                             sound_effects = True
-                            if not channel1.get_busy():
-                                channel1.play(music, loops = -1)
+                            #if not channel1.get_busy():
+                            channel1.play(music, loops = -1)
 
                 
                     
@@ -289,9 +293,10 @@ while continuer:
         ecran.blit(cible1.image, cible1.rect)
         ecran.blit(cible2.image, cible2.rect)
         ecran.blit(cible3.image, cible3.rect)
-        Time_left_image = FONT.render("Time left : " + str(time_left), True, (0, 255, 0))
+        Time_left_image = FONT.render("Time left : " + str(time_left), True, (66, 236, 255))
+        
         ecran.blit(Time_left_image,(10,10))
-        Score_image = FONT.render("Score     : " + str(score), True, (0, 255, 0))
+        Score_image = FONT.render("Score     : " + str(score), True, (66, 236, 255))
         ecran.blit(Score_image,(10,106))
         pygame.display.flip()
         
@@ -328,8 +333,8 @@ while continuer:
                         sound_effects = False
                     else:
                         sound_effects = True
-                        if not channel1.get_busy():
-                            channel1.play(music, loops = -1)
+                        #if not channel1.get_busy():
+                        channel1.play(music, loops = -1)
                 
         
         if score >= high_score:
@@ -337,15 +342,18 @@ while continuer:
             high_score = score
         
         ecran.blit(ingamebackground.image, ingamebackground.rect)
-        Time_left_image = FONT.render("Time left  : " + str(time_left), True, (0, 255, 0))
+        Time_left_image = FONT.render("Time left  : " + str(time_left), True, (66, 236, 255))
         ecran.blit(Time_left_image,(10,10))
-        Score_image = FONT.render("Your score : " + str(score), True, (0, 255, 0))
+        Score_image = FONT.render("Your score : " + str(score), True, (66, 236, 255))
         ecran.blit(Score_image,(10,106))
-        High_score_image = FONT.render("High score : " + str(high_score), True, (0, 255, 0))
+        High_score_image = FONT.render("High score : " + str(high_score), True, (66, 236, 255))
         ecran.blit(High_score_image, (10,202))
         pygame.display.flip()
         
         if time_left <= 0:
             next_gamestate()
+
+    clock.tick(30)
+
 
 pygame.quit
