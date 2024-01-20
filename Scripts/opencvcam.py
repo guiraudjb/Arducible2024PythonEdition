@@ -36,6 +36,7 @@ class Cam(pygame.sprite.Sprite):
 
 
     def update(self, cap, mp_drawing, mp_pose, LimiteBasseCamera, LimiteHauteCamera, LimiteGaucheCamera, LimiteDroiteCamera ):
+        
         self.photo = cap.read()[1]
         self.photo = cv2.flip(self.photo,1)
         self.photo = self.photo[self.LimiteBasseCamera:self.LimiteHauteCamera,self.LimiteGaucheCamera:self.LimiteDroiteCamera]

@@ -1,8 +1,11 @@
+#---------------------------------IMPORTS-------------------------------
 import pygame
 from pygame import *
 pygame.init()
 from Scripts.init import * # load config.ini and some variables
 from Scripts.Sprites import *# load sprites
+
+#---------------------Procedures et fonctions---------------------------
 
 def init_game():
     global cible1
@@ -219,6 +222,8 @@ def draw_cibles():
     ecran.blit(cible2.image, cible2.rect)
     ecran.blit(cible3.image, cible3.rect)
 
+
+#-------------------------DEBUT DU Programme ---------------------------
 #initialise background table
 introbackground = BackgroudFrame()
 ingamebackground = Background()
@@ -251,6 +256,13 @@ else:
     webcam_zone_interdite = False
     ingamebackground.image = ingamebackground.images[0]
 
+#initialise the screen
+pygame.display.set_caption("Arducible PÉTANQUE GAME") # set window title
+if Fullscreen:
+    ecran = pygame.display.set_mode((LARGEUR_ECRAN, HAUTEUR_ECRAN), pygame.SCALED | pygame.FULLSCREEN, vsync=1)
+else:
+    ecran = pygame.display.set_mode((LARGEUR_ECRAN, HAUTEUR_ECRAN), pygame.SCALED )
+
 # run the background game music
 if background_music == True:
     music = pygame.mixer.Sound('./assets/Sounds/Neon City.mp3')
@@ -259,18 +271,14 @@ if background_music == True:
     
     
 
-#initialise the screen
-pygame.display.set_caption("Arducible PÉTANQUE GAME") # set window title
-if Fullscreen:
-    ecran = pygame.display.set_mode((LARGEUR_ECRAN, HAUTEUR_ECRAN), pygame.SCALED | pygame.FULLSCREEN, vsync=1)
-else:
-    ecran = pygame.display.set_mode((LARGEUR_ECRAN, HAUTEUR_ECRAN), pygame.SCALED )
-
-
 
 init_game()
-#main game loop
+
+
+#---------------------------main game loop------------------------------
+
 while continuer:
+    #-----------------------begining scene------------------------------
     if gamestate == 0:
         countdown()
         for event in pygame.event.get():
@@ -307,31 +315,46 @@ while continuer:
         if debug_line == True:
             debug_lines()
         
+        if ShowFPS == True:
+            fps = str(int(clock.get_fps()))
+            FPS1 = FontDel1.render(fps, True, blue)
+            FPS2 = FontDel2.render(fps, True, bluelight)
+            ecran.blit(FPS1,(0,0))
+            ecran.blit(FPS2,(0,0))
         
         pygame.display.flip()
         if time_left <= 0:
             next_gamestate()
         
-    
+    #-----------------------Game scene----------------------------------
     if gamestate == 1:
         countdown()
         
         
         if webcam_compatibility == True:
-            mycam.update(mycam.cap, mycam.mp_drawing,mycam.mp_pose, mycam.LimiteBasseCamera, mycam.LimiteHauteCamera, mycam.LimiteGaucheCamera, mycam.LimiteDroiteCamera)
-            webcam_zone_interdite = mycam.zoneinterdite
-            showcam()
-            ecran.blit(ingamebackground.image, ingamebackground.rect)
-
-            if mycam.zoneinterdite == True:
-                #Info_image = FONT.render("Go to the shooting zone !!!", True, (255, 0, 0))
-                #Info_image_rect = Info_image.get_rect()
-                #ecran.blit(Info_image,(LARGEUR_ECRAN/2-Info_image_rect.right/2, 492))
-                camring.image = camring.images[0]
-                ecran.blit(camring.image, (831,0))
+            cam_timer = pygame.time.get_ticks()
+            if cam_timer - old_cam_timer >= 50:
+                old_cam_timer = cam_timer
+                mycam.update(mycam.cap, mycam.mp_drawing,mycam.mp_pose, mycam.LimiteBasseCamera, mycam.LimiteHauteCamera, mycam.LimiteGaucheCamera, mycam.LimiteDroiteCamera)
+                webcam_zone_interdite = mycam.zoneinterdite
+                showcam()
             else:
-                camring.image = camring.images[1]
-                ecran.blit(camring.image, (831,0))
+                ecran.blit(ingamebackground.image, ingamebackground.rect)
+
+            ecran.blit(ingamebackground.image, ingamebackground.rect)
+            if DebugCam == True:
+               showcam()
+            
+                    
+            if mycam.zoneinterdite == True:
+               #Info_image = FONT.render("Go to the shooting zone !!!", True, (255, 0, 0))
+               #Info_image_rect = Info_image.get_rect()
+               #ecran.blit(Info_image,(LARGEUR_ECRAN/2-Info_image_rect.right/2, 492))
+               camring.image = camring.images[0]
+               ecran.blit(camring.image, (831,0))
+            else:
+               camring.image = camring.images[1]
+               ecran.blit(camring.image, (831,0))
         else:
             ecran.blit(ingamebackground.image, ingamebackground.rect)
 
@@ -389,16 +412,18 @@ while continuer:
 
 
         draw_cibles()
-
-        
-        
+                
         draw_ingame_text()
         
-        #if mycam.zoneinterdite == True:
-        #    ecran.blit(adervtising_shooting_zone.image, adervtising_shooting_zone.rect)
         
         if debug_line == True:
             debug_lines()
+        if ShowFPS == True:
+            fps = str(int(clock.get_fps()))
+            FPS1 = FontDel1.render(fps, True, blue)
+            FPS2 = FontDel2.render(fps, True, bluelight)
+            ecran.blit(FPS1,(0,0))
+            ecran.blit(FPS2,(0,0))
 
         pygame.display.flip()
         
@@ -406,7 +431,7 @@ while continuer:
             next_gamestate()
 
         clock.tick(60)
-        
+    #-----------------------ending scene--------------------------------    
     if gamestate == 2:
         
         countdown()
@@ -451,11 +476,20 @@ while continuer:
         if debug_line == True:
             debug_lines()
         
+        if ShowFPS == True:
+            fps = str(int(clock.get_fps()))
+            FPS1 = FontDel1.render(fps, True, blue)
+            FPS2 = FontDel2.render(fps, True, bluelight)
+            ecran.blit(FPS1,(0,0))
+            ecran.blit(FPS2,(0,0))
+        
         pygame.display.flip()
         
         if time_left <= 0:
             next_gamestate()
-    clock.tick(30)
-
+            
+    clock.tick(FPS) #set to 30 FPS
+    
+    
 
 pygame.quit

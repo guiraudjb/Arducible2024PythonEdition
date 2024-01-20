@@ -11,7 +11,9 @@ clock = pygame.time.Clock()
 old_timer = pygame.time.get_ticks()
 game_timer = pygame.time.get_ticks()
 
-
+cam_clock = pygame.time.Clock()
+old_cam_timer = pygame.time.get_ticks()
+cam_timer = pygame.time.get_ticks()
 
 
 LARGEUR_ECRAN =1920
@@ -53,6 +55,9 @@ if not os.path.exists("config.ini"):
     f.write("\n")
     f.write("[Debug]\n")
     f.write("DebugLine = True\n")
+    f.write("FPS = 20\n")
+    f.write("ShowFps = True\n")
+    f.write("DebugCam = True\n")
     
     # Fermer le fichier
     f.close()
@@ -76,6 +81,9 @@ if os.path.exists("config.ini"):
         FadeoutTime = int(config["Audio"]["FadeoutTime"])
         debug_line_string = (config["Debug"]["DebugLine"])
         Fontsize = int(config["Police"]["Size"])
+        FPS = int(config["Debug"]["FPS"])
+        ShowFps_string = config["Debug"]["ShowFps"]
+        DebugCam_string = config["Debug"]["DebugCam"]
         f.close
 
 
@@ -122,3 +130,13 @@ if debug_line_string == 'True':
     debug_line = True
 else:
     debug_line = False
+    
+if ShowFps_string == 'True':
+    ShowFPS = True
+else:
+    ShowFPS = False
+    
+if DebugCam_string == 'True':
+    DebugCam = True
+else:
+    DebugCam = False
