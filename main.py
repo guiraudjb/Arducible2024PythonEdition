@@ -91,13 +91,36 @@ def draw_ellipse_angle(surface, color, rect, angle, width=0):
     
 def debug_lines():
     global ecran
-    pygame.draw.line(ecran, (66, 236, 255), (960,0), (960,1080), 1)
-    pygame.draw.line(ecran, (66, 236, 255), (480,0), (480,1080), 1)
-    pygame.draw.line(ecran, (66, 236, 255), (1440,0), (1440,1080), 1)
+    pygame.draw.line(ecran, red, (960,0), (960,1080), 1)
+    pygame.draw.line(ecran, red, (480,0), (480,1080), 1)
+    pygame.draw.line(ecran, red, (1440,0), (1440,1080), 1)
     
-    pygame.draw.line(ecran, (66, 236, 255), (0,360), (1920,360), 1)
-    pygame.draw.line(ecran, (66, 236, 255), (0,540), (1920,540), 1)
-    pygame.draw.line(ecran, (66, 236, 255), (0,720), (1920,720), 1)
+    pygame.draw.line(ecran, red, (0,360), (1920,360), 1)
+    pygame.draw.line(ecran, red, (0,540), (1920,540), 1)
+    pygame.draw.line(ecran, red, (0,720), (1920,720), 1)
+
+
+def draw_intro_text():
+
+    timeleft_center_image1 = FontDel1.render(str(time_left), True, (0, 255, 0))
+    timeleft_center_image2 = FontDel2.render(str(time_left), True, (0, 200, 0))
+       
+    timeleft_center_image1_width, timeleft_center_image1_height = timeleft_center_image1.get_rect().size
+    ecran.blit(timeleft_center_image1,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height/2))
+    ecran.blit(timeleft_center_image2,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height/2))
+    
+    HighScore_image1 = FontDel1.render("HIGH SCORE", True, bluelight)
+    HighScore_image2 = FontDel2.render("HIGH SCORE", True, blue)
+    HighScore_center_image1_width, HighScore_center_image1_height = HighScore_image1.get_rect().size
+    ecran.blit(HighScore_image1,(1920/2 - HighScore_center_image1_width  / 2,5))
+    ecran.blit(HighScore_image2,(1920/2 - HighScore_center_image1_width  / 2,5))
+
+    HighScore_image1_text = FontDel1.render(str(high_score), True, bluelight)
+    HighScore_image2_text = FontDel2.render(str(high_score), True, blue)
+    HighScore_center_image1_text_width, HighScore_center_image1_text_height = HighScore_image1_text.get_rect().size
+    ecran.blit(HighScore_image1_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
+    ecran.blit(HighScore_image2_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
+   
 
 def draw_ending_text():
 
@@ -166,27 +189,35 @@ def draw_ingame_text():
     Score_image2 = FontDel2.render("PTS : " + str(score), True, (66, 0, 255))
     ecran.blit(Score_image2,(10,106))
 
-def draw_intro_text():
-
-    timeleft_center_image1 = FontDel1.render(str(time_left), True, (0, 255, 0))
-    timeleft_center_image2 = FontDel2.render(str(time_left), True, (0, 200, 0))
-       
-    timeleft_center_image1_width, timeleft_center_image1_height = timeleft_center_image1.get_rect().size
-    ecran.blit(timeleft_center_image1,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height/2))
-    ecran.blit(timeleft_center_image2,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height/2))
-    
-    HighScore_image1 = FontDel1.render("HIGH SCORE", True, bluelight)
-    HighScore_image2 = FontDel2.render("HIGH SCORE", True, blue)
-    HighScore_center_image1_width, HighScore_center_image1_height = HighScore_image1.get_rect().size
-    ecran.blit(HighScore_image1,(1920/2 - HighScore_center_image1_width  / 2,5))
-    ecran.blit(HighScore_image2,(1920/2 - HighScore_center_image1_width  / 2,5))
-
-    HighScore_image1_text = FontDel1.render(str(high_score), True, bluelight)
-    HighScore_image2_text = FontDel2.render(str(high_score), True, blue)
-    HighScore_center_image1_text_width, HighScore_center_image1_text_height = HighScore_image1_text.get_rect().size
-    ecran.blit(HighScore_image1_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
-    ecran.blit(HighScore_image2_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
-    
+def draw_cibles():
+    global ecran
+    global cible1
+    global cible2
+    global cible3
+    global cibleencours
+    if cibleencours == 1:
+        cible1.image = cible1.images[1]
+        cible2.image = cible1.images[0]
+        cible3.image = cible1.images[0]
+        
+    elif cibleencours == 2:
+            
+        cible1.image = cible1.images[0]
+        cible2.image = cible1.images[1]
+        cible3.image = cible1.images[0]
+        
+    elif cibleencours == 3:
+            
+        cible1.image = cible1.images[0]
+        cible2.image = cible1.images[0]
+        cible3.image = cible1.images[1]
+        
+    cible1.image = pygame.transform.scale(cible1.image, (384, 384))
+    cible2.image = pygame.transform.scale(cible2.image, (384, 384))
+    cible3.image = pygame.transform.scale(cible3.image, (384, 384))
+    ecran.blit(cible1.image, cible1.rect)
+    ecran.blit(cible2.image, cible2.rect)
+    ecran.blit(cible3.image, cible3.rect)
 
 #initialise background table
 introbackground = BackgroudFrame()
@@ -204,8 +235,6 @@ if active_webcam:
             webcam_compatibility = False
             
         if webcam_compatibility == True:
-            
-  
             Decalagex = (LARGEUR_ECRAN - mycam.LargeurChampCamera) / 2 
             ingamebackground.image = ingamebackground.images[1]
         else:
@@ -359,30 +388,8 @@ while continuer:
                             channel1.play(music, loops = -1)
 
 
-        if cibleencours == 1:
-            
-            cible1.image = cible1.images[1]
-            cible2.image = cible1.images[0]
-            cible3.image = cible1.images[0]
-        
-        elif cibleencours == 2:
-            
-            cible1.image = cible1.images[0]
-            cible2.image = cible1.images[1]
-            cible3.image = cible1.images[0]
-        
-        elif cibleencours == 3:
-            
-            cible1.image = cible1.images[0]
-            cible2.image = cible1.images[0]
-            cible3.image = cible1.images[1]
-        
-        cible1.image = pygame.transform.scale(cible1.image, (384, 384))
-        cible2.image = pygame.transform.scale(cible2.image, (384, 384))
-        cible3.image = pygame.transform.scale(cible3.image, (384, 384))
-        ecran.blit(cible1.image, cible1.rect)
-        ecran.blit(cible2.image, cible2.rect)
-        ecran.blit(cible3.image, cible3.rect)
+        draw_cibles()
+
         
         
         draw_ingame_text()

@@ -84,16 +84,18 @@ time_left = intro_length
 #initialise font text
 FontDel2 = pygame.font.Font("./assets/fonts/NEON GLOW-Hollow.otf",Fontsize)
 FontDel1 = pygame.font.Font("./assets/fonts/NEON GLOW.otf",Fontsize)
+#preset color for neon font
 red = (204, 0, 0)
 redlight = (239, 41, 41)
-#orange =
-#orangelight =
-#yellow =
-#yellowlight =
+orange = (204, 0, 0)
+orangelight = (239, 41, 41)
+yellow = (237, 212, 0)
+yellowlight =(252, 233, 79)
 blue = (66, 0, 255)
 bluelight =(66, 236, 255)
-#green =
-#green light =
+green = (0, 255, 0)
+greenlight = (0, 200, 0)
+
 
 if active_webcam_string == 'True':
     active_webcam = True
