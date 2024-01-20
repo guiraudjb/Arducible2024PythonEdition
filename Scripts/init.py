@@ -13,9 +13,12 @@ game_timer = pygame.time.get_ticks()
 
 #initialise font text
 GAME_FONT = pygame.font.Font("./assets/fonts/FUTRFW.TTF", 48)
-Arcade_Font = pygame.font.Font("./assets/fonts/ARCADE_I.TTF", 196)
-FONT = pygame.font.Font("./assets/fonts/FUTRFW.TTF", 48)
-FONT.set_bold(True)
+Arcade_Font = pygame.font.Font("./assets/fonts/NeonSans.ttf", 196)
+FONT = pygame.font.Font("./assets/fonts/NEON GLOW-Hollow.otf", 196)
+FontDel2 = pygame.font.Font("./assets/fonts/NEON GLOW-Hollow.otf",196)
+FontDel1 = pygame.font.Font("./assets/fonts/NEON GLOW.otf",196)
+
+#FontDel1.set_bold(True)
 
 
 LARGEUR_ECRAN =1920
@@ -29,7 +32,7 @@ gamestate = 0
 
 oldcibleencours = cibleencours
 continuer = True
-
+debug_line = True
 
 # parse config.ini and create if not exist
 if not os.path.exists("config.ini"):

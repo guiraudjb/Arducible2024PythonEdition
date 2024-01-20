@@ -25,7 +25,7 @@ class Background(pygame.sprite.Sprite):
        # Call the parent class (Sprite) constructor
         pygame.sprite.Sprite.__init__(self)
         self.images = []
-        self.images.append(pygame.image.load('./assets/Images/Background/0.jpg'))
+        self.images.append(pygame.image.load('./assets/Images/Background/1.jpg'))
         self.images.append(pygame.image.load('./assets/Images/Background/1.png'))
         self.images.append(pygame.image.load('./assets/Images/Background/2.jpg'))
         self.image = self.images[0]
@@ -100,29 +100,5 @@ class BackgroudFrame(pygame.sprite.Sprite):
         print(self.index)
         #finally we will update the image that will be displayed
         self.image = self.images[self.index]
-
- 
-
-class background_text_your_score(pygame.sprite.Sprite):
-    def __init__(self):
-       # Call the parent class (Sprite) constructor
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('./assets/Images/Background/high.png')
-        self.rect = self.image.get_rect()
-
-class background_text_high_score(pygame.sprite.Sprite):
-    def __init__(self):
-       # Call the parent class (Sprite) constructor
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('./assets/Images/Background/your.png')
-        self.rect = self.image.get_rect()
-
-
-class background_text_go_shooting_zone(pygame.sprite.Sprite):
-    def __init__(self):
-       # Call the parent class (Sprite) constructor
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('./assets/Images/Background/Go-to-the-shooting-zone.png')
-        self.rect = self.image.get_rect()
 
 

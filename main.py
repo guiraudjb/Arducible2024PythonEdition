@@ -2,7 +2,7 @@ import pygame
 from pygame import *
 pygame.init()
 from Scripts.init import * # load config.ini and some variables
-from Scripts.Sprites import Cible,Background,BackgroudFrame,background_text_your_score,background_text_high_score,background_text_go_shooting_zone,ColoredRing# load sprites
+from Scripts.Sprites import *# load sprites
 
 def init_game():
     global cible1
@@ -11,29 +11,19 @@ def init_game():
     cible1 = Cible()
     cible1.image = pygame.transform.scale(cible1.image, (384, 384))
     cible1.rect.x = 188
-    cible1.rect.y = 600
+    cible1.rect.y = 700
 
     cible2 = Cible()
     cible2.image = pygame.transform.scale(cible2.image, (384, 384))
     cible2.rect.x = 768
-    cible2.rect.y = 600
+    cible2.rect.y = 700
 
     cible3 = Cible()
     cible3.image = cible3.images[1]
     cible3.image = pygame.transform.scale(cible3.image, (384, 384))
     cible3.rect.x = 1348
-    cible3.rect.y = 600
+    cible3.rect.y = 700
     
-    ending_screen_text_high.rect.x = 478
-    ending_screen_text_high.rect.y = 110    
-    
-    ending_screen_text_your.rect.x = 478
-    ending_screen_text_your.rect.y = 650
-    
-    adervtising_shooting_zone.rect.x = 448
-    adervtising_shooting_zone.rect.y = 708
-    
-
 
 
 def next_gamestate():
@@ -44,9 +34,14 @@ def next_gamestate():
     global game_length
     global ending_length
     global ingamebackground
+    global webcam_compatibility
     if gamestate == 0:
         gamestate = 1
-        ingamebackground.image = ingamebackground.images[0]
+        if webcam_compatibility == True:
+            ingamebackground.image = ingamebackground.images[1]
+        else:
+            ingamebackground.image = ingamebackground.images[0]
+        
         time_left = game_length
         score = 0
     elif gamestate == 1:
@@ -69,12 +64,7 @@ def ciblealeatoire():
 def showcam():
     mycam.rect.x = mycam.rect.x + Decalagex
     ecran.blit(mycam.images, mycam.rect)
-   
-    #if mycam.zoneinterdite:
-    #    draw_ellipse_angle(ecran, (255, 0, 0), (848, 0, mycam.LargeurChampCamera, 384), 0, 5)
-    #else:
-    #    draw_ellipse_angle(ecran, (0, 255, 0), (848, 0, mycam.LargeurChampCamera, 384), 0, 5)
-        
+ 
 def countdown():
     global old_timer
     global game_timer
@@ -101,14 +91,109 @@ def draw_ellipse_angle(surface, color, rect, angle, width=0):
     rotated_surf = pygame.transform.rotate(shape_surf, angle)
     surface.blit(rotated_surf, rotated_surf.get_rect(center = target_rect.center))
     
+def debug_lines():
+    global ecran
+    pygame.draw.line(ecran, (66, 236, 255), (960,0), (960,1080), 1)
+    pygame.draw.line(ecran, (66, 236, 255), (480,0), (480,1080), 1)
+    pygame.draw.line(ecran, (66, 236, 255), (1440,0), (1440,1080), 1)
+    
+    pygame.draw.line(ecran, (66, 236, 255), (0,360), (1920,360), 1)
+    pygame.draw.line(ecran, (66, 236, 255), (0,540), (1920,540), 1)
+    pygame.draw.line(ecran, (66, 236, 255), (0,720), (1920,720), 1)
+
+def draw_ending_text():
+
+    timeleft_center_image1 = FontDel1.render(str(time_left), True, (0, 255, 0))
+    timeleft_center_image2 = FontDel2.render(str(time_left), True, (0, 200, 0))
+    timeleft_center_image1_width, timeleft_center_image1_height = timeleft_center_image1.get_rect().size
+    ecran.blit(timeleft_center_image1,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height+20))
+    ecran.blit(timeleft_center_image2,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height+20))
+        
+    HighScore_image1 = FontDel1.render("HIGH SCORE", True, (66, 236, 255))
+    HighScore_image2 = FontDel2.render("HIGH SCORE", True, (66, 0, 255))
+    HighScore_center_image1_width, HighScore_center_image1_height = HighScore_image1.get_rect().size
+    ecran.blit(HighScore_image1,(1920/2 - HighScore_center_image1_width  / 2,5))
+    ecran.blit(HighScore_image2,(1920/2 - HighScore_center_image1_width  / 2,5))
+
+    HighScore_image1_text = FontDel1.render(str(high_score), True, (239, 41, 41))
+    HighScore_image2_text = FontDel2.render(str(high_score), True, (204, 0, 0))
+    HighScore_center_image1_text_width, HighScore_center_image1_text_height = HighScore_image1_text.get_rect().size
+    ecran.blit(HighScore_image1_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
+    ecran.blit(HighScore_image2_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
+    
+    
+    YourScore_image1_text = FontDel1.render("YOUR SCORE", True, (66, 236, 255))
+    YourScore_image2_text = FontDel2.render("YOUR SCORE", True, (66, 0, 255))
+    YourScore_center_image1_text_width, YourScore_center_image1_text_height = YourScore_image1_text.get_rect().size
+    ecran.blit(YourScore_image1_text,(1920/2 - YourScore_center_image1_text_width  / 2,540))
+    ecran.blit(YourScore_image2_text,(1920/2 - YourScore_center_image1_text_width  / 2,540))
+    
+    YourScore_image1 = FontDel1.render(str(score), True, (66, 236, 255))
+    YourScore_image2 = FontDel2.render(str(score), True, (66, 0, 255))
+    YourScore_center_image1_width, YourScore_center_image1_height = YourScore_image1.get_rect().size
+    ecran.blit(YourScore_image1,(1920/2 - YourScore_center_image1_width  / 2,720))
+    ecran.blit(YourScore_image2,(1920/2 - YourScore_center_image1_width  / 2,720))
+
+    
+def draw_ingame_text():
+    global ecran
+                    
+    if time_left <= 15:
+        #red
+        Arcade_center_image1 =FontDel1.render(str(time_left), True, (239, 41, 41))
+        Arcade_center_image2 =FontDel2.render(str(time_left), True, (204, 0, 0))
+    elif time_left <= 30:
+        #orange
+        Arcade_center_image1 = FontDel1.render(str(time_left), True, (252, 175, 62))
+        Arcade_center_image2 = FontDel2.render(str(time_left), True, (245, 121, 0))
+    elif time_left <= 45:
+        #yellow
+        Arcade_center_image1 = FontDel1.render(str(time_left), True, (252, 233, 79))
+        Arcade_center_image2 = FontDel2.render(str(time_left), True, (237, 212, 0))
+    elif time_left >= 60:
+        #green
+        Arcade_center_image1 = FontDel1.render(str(time_left), True, (0, 255, 0))
+        Arcade_center_image2 = FontDel2.render(str(time_left), True, (0, 200, 0))
+    else:
+        #green
+        Arcade_center_image1 = FontDel1.render(str(time_left), True, (0, 255, 0))
+        Arcade_center_image2 = FontDel2.render(str(time_left), True, (0, 200, 0))
+       
+    Arcade_center_image1_width, Arcade_center_image1_height = Arcade_center_image1.get_rect().size
+    ecran.blit(Arcade_center_image1,(1920/2 - Arcade_center_image1_width/2,1080/2 - Arcade_center_image1_height/2))
+    ecran.blit(Arcade_center_image2,(1920/2 - Arcade_center_image1_width/2,1080/2 - Arcade_center_image1_height/2))
+
+    Score_image1 = FontDel1.render("PTS : " + str(score), True, (66, 236, 255))
+    ecran.blit(Score_image1,(10,106))
+    Score_image2 = FontDel2.render("PTS : " + str(score), True, (66, 0, 255))
+    ecran.blit(Score_image2,(10,106))
+
+def draw_intro_text():
+
+    timeleft_center_image1 = FontDel1.render(str(time_left), True, (0, 255, 0))
+    timeleft_center_image2 = FontDel2.render(str(time_left), True, (0, 200, 0))
+       
+    timeleft_center_image1_width, timeleft_center_image1_height = timeleft_center_image1.get_rect().size
+    ecran.blit(timeleft_center_image1,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height/2))
+    ecran.blit(timeleft_center_image2,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height/2))
+    
+    HighScore_image1 = FontDel1.render("HIGH SCORE", True, (66, 236, 255))
+    HighScore_image2 = FontDel2.render("HIGH SCORE", True, (66, 0, 255))
+    HighScore_center_image1_width, HighScore_center_image1_height = HighScore_image1.get_rect().size
+    ecran.blit(HighScore_image1,(1920/2 - HighScore_center_image1_width  / 2,5))
+    ecran.blit(HighScore_image2,(1920/2 - HighScore_center_image1_width  / 2,5))
+
+    HighScore_image1_text = FontDel1.render(str(high_score), True, (239, 41, 41))
+    HighScore_image2_text = FontDel2.render(str(high_score), True, (204, 0, 0))
+    HighScore_center_image1_text_width, HighScore_center_image1_text_height = HighScore_image1_text.get_rect().size
+    ecran.blit(HighScore_image1_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
+    ecran.blit(HighScore_image2_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
+    
 
 #initialise background table
 introbackground = BackgroudFrame()
 ingamebackground = Background()
 camring = ColoredRing()
-ending_screen_text_your = background_text_your_score()
-ending_screen_text_high = background_text_high_score()
-adervtising_shooting_zone = background_text_go_shooting_zone()
 
 #initialise webcam if actived in config.ini
 if active_webcam:
@@ -122,22 +207,22 @@ if active_webcam:
             
         if webcam_compatibility == True:
             
-            print("ok")
+  
             Decalagex = (LARGEUR_ECRAN - mycam.LargeurChampCamera) / 2 
-            ingamebackground.images[1] = pygame.image.load('./assets/Images/Background/1.png')
+            ingamebackground.image = ingamebackground.images[1]
         else:
             webcam_zone_interdite = False
-            ingamebackground.images[1] = pygame.image.load('./assets/Images/Background/1.jpg')
+            ingamebackground.image = ingamebackground.images[0]
     except:
         print("cam unsuported. CPU is too old")
         webcam_compatibility = False
         webcam_zone_interdite = False
-        ingamebackground.images[1] = pygame.image.load('./assets/Images/Background/1.jpg')
+        ingamebackground.image = ingamebackground.images[0]
         
 else:
     webcam_compatibility = False
     webcam_zone_interdite = False
-    ingamebackground.images[1] = pygame.image.load('./assets/Images/Background/1.jpg')
+    ingamebackground.image = ingamebackground.images[0]
 
 # run the background game music
 if background_music == True:
@@ -146,10 +231,6 @@ if background_music == True:
     channel1.play(music, loops = -1)
     
     
-
-
-    #pygame.mixer.Channel(0).play(pygame.mixer.Sound('./assets/Sounds/guardians.mp3'))
-    #pygame.mixer.Channel(0).stop_here
 
 #initialise the screen
 pygame.display.set_caption("Arducible PÉTANQUE GAME") # set window title
@@ -195,15 +276,11 @@ while continuer:
         introbackground.update()
         ecran.blit(introbackground.image, introbackground.rect)
 
-        Time_left_image = FONT.render( "Time left  : " + str(time_left), True, (66, 236, 255))
-        Time_left_image_mask = GAME_FONT.render( "Time left  : " + str(time_left), True, (12, 152, 192))
-        ecran.blit(Time_left_image,(10,10))
-        ecran.blit(Time_left_image_mask,(11,10))
+        draw_intro_text()
+        if debug_line == True:
+            debug_lines()
         
-        High_score_image = FONT.render("High score : " + str(high_score), True, (66, 236, 255))
-        ecran.blit(High_score_image, (10,202))
         
-             
         pygame.display.flip()
         if time_left <= 0:
             next_gamestate()
@@ -230,8 +307,8 @@ while continuer:
                 ecran.blit(camring.image, (831,0))
         else:
             ecran.blit(ingamebackground.image, ingamebackground.rect)
-        
-        
+
+
         for event in pygame.event.get():
             
             
@@ -283,11 +360,6 @@ while continuer:
                             #if not channel1.get_busy():
                             channel1.play(music, loops = -1)
 
-                
-                    
-        if level > oldlevel or level < oldlevel:
-            ingamebackground.image = ingamebackground.images[level]
-            oldlevel=level
 
         if cibleencours == 1:
             
@@ -313,39 +385,21 @@ while continuer:
         ecran.blit(cible1.image, cible1.rect)
         ecran.blit(cible2.image, cible2.rect)
         ecran.blit(cible3.image, cible3.rect)
-        if mycam.zoneinterdite == True:
-            ecran.blit(adervtising_shooting_zone.image, adervtising_shooting_zone.rect)
-        #Time_left_image = FONT.render("Time left : " + str(time_left), True, (66, 236, 255))
-        #ecran.blit(Time_left_image,(10,10))
         
-        if time_left <= 15:
-            Arcade_center_image = Arcade_Font.render(str(time_left), True, (255, 0, 0))
-        elif time_left <= 30:
-            Arcade_center_image = Arcade_Font.render(str(time_left), True, (255, 128, 0))
-        elif time_left <= 45:
-            Arcade_center_image = Arcade_Font.render(str(time_left), True, (255, 255, 0))
-        elif time_left >= 60:
-            Arcade_center_image = Arcade_Font.render(str(time_left), True, (255, 233, 0))
-        else:
-            Arcade_center_image = Arcade_Font.render(str(time_left), True, (0, 255, 0))
-
-
-
-        #define time left position and blit
-        if len(str(time_left)) == 1:
-            ecran.blit(Arcade_center_image,(894,400))
-        if len(str(time_left)) == 2:
-            ecran.blit(Arcade_center_image,(794,400))        
-        if len(str(time_left)) == 3:
-            ecran.blit(Arcade_center_image,(696,400))
-                  
-        Score_image = FONT.render("Score     : " + str(score), True, (66, 236, 255))
-        ecran.blit(Score_image,(10,106))
+        
+        draw_ingame_text()
+        
+        #if mycam.zoneinterdite == True:
+        #    ecran.blit(adervtising_shooting_zone.image, adervtising_shooting_zone.rect)
+        
+        if debug_line == True:
+            debug_lines()
 
         pygame.display.flip()
         
         if time_left <= 0:
             next_gamestate()
+
         clock.tick(60)
         
     if gamestate == 2:
@@ -386,22 +440,16 @@ while continuer:
             high_score = score
         
         ecran.blit(ingamebackground.image, ingamebackground.rect)
-        Time_left_image = FONT.render("Time left  : " + str(time_left), True, (66, 236, 255))
-        ecran.blit(Time_left_image,(10,10))
-        
-        ecran.blit(ending_screen_text_high.image, ending_screen_text_high.rect)
-        High_score_image = Arcade_Font.render(str(high_score), True, (66, 236, 255))
-        ecran.blit(High_score_image, (892,810))
-        
-        ecran.blit(ending_screen_text_your.image, ending_screen_text_your.rect)
-        Score_image = Arcade_Font.render(str(score), True, (66, 236, 255))
-        ecran.blit(Score_image,(892,270))
 
+        draw_ending_text()
+        
+        if debug_line == True:
+            debug_lines()
+        
         pygame.display.flip()
         
         if time_left <= 0:
             next_gamestate()
-
     clock.tick(30)
 
 
