@@ -118,3 +118,11 @@ class background_text_high_score(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+class background_text_go_shooting_zone(pygame.sprite.Sprite):
+    def __init__(self):
+       # Call the parent class (Sprite) constructor
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('./assets/Images/Background/Go-to-the-shooting-zone.png')
+        self.rect = self.image.get_rect()
+
+

@@ -2,7 +2,7 @@ import pygame
 from pygame import *
 pygame.init()
 from Scripts.init import * # load config.ini and some variables
-from Scripts.Sprites import Cible,Background,BackgroudFrame,background_text_your_score,background_text_high_score,ColoredRing# load sprites
+from Scripts.Sprites import Cible,Background,BackgroudFrame,background_text_your_score,background_text_high_score,background_text_go_shooting_zone,ColoredRing# load sprites
 
 def init_game():
     global cible1
@@ -29,6 +29,9 @@ def init_game():
     
     ending_screen_text_your.rect.x = 478
     ending_screen_text_your.rect.y = 650
+    
+    adervtising_shooting_zone.rect.x = 448
+    adervtising_shooting_zone.rect.y = 708
     
 
 
@@ -105,6 +108,7 @@ ingamebackground = Background()
 camring = ColoredRing()
 ending_screen_text_your = background_text_your_score()
 ending_screen_text_high = background_text_high_score()
+adervtising_shooting_zone = background_text_go_shooting_zone()
 
 #initialise webcam if actived in config.ini
 if active_webcam:
@@ -216,9 +220,9 @@ while continuer:
             ecran.blit(ingamebackground.image, ingamebackground.rect)
 
             if mycam.zoneinterdite == True:
-                Info_image = FONT.render("Go to the shooting zone !!!", True, (255, 0, 0))
-                Info_image_rect = Info_image.get_rect()
-                ecran.blit(Info_image,(LARGEUR_ECRAN/2-Info_image_rect.right/2, 592))
+                #Info_image = FONT.render("Go to the shooting zone !!!", True, (255, 0, 0))
+                #Info_image_rect = Info_image.get_rect()
+                #ecran.blit(Info_image,(LARGEUR_ECRAN/2-Info_image_rect.right/2, 492))
                 camring.image = camring.images[0]
                 ecran.blit(camring.image, (831,0))
             else:
@@ -309,6 +313,8 @@ while continuer:
         ecran.blit(cible1.image, cible1.rect)
         ecran.blit(cible2.image, cible2.rect)
         ecran.blit(cible3.image, cible3.rect)
+        if mycam.zoneinterdite == True:
+            ecran.blit(adervtising_shooting_zone.image, adervtising_shooting_zone.rect)
         #Time_left_image = FONT.render("Time left : " + str(time_left), True, (66, 236, 255))
         #ecran.blit(Time_left_image,(10,10))
         
