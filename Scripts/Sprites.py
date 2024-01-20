@@ -24,14 +24,22 @@ class Background(pygame.sprite.Sprite):
     def __init__(self):
        # Call the parent class (Sprite) constructor
         pygame.sprite.Sprite.__init__(self)
-        
-        self.image = pygame.image.load("./assets/Images/Background/0.jpg")
         self.images = []
         self.images.append(pygame.image.load('./assets/Images/Background/0.jpg'))
         self.images.append(pygame.image.load('./assets/Images/Background/1.png'))
         self.images.append(pygame.image.load('./assets/Images/Background/2.jpg'))
+        self.image = self.images[0]
         self.rect = self.image.get_rect()
- 
+
+class ColoredRing(pygame.sprite.Sprite):
+    def __init__(self):
+       # Call the parent class (Sprite) constructor
+        pygame.sprite.Sprite.__init__(self)
+        self.images = []
+        self.images.append(pygame.image.load('./assets/Images/Background/redring.png'))
+        self.images.append(pygame.image.load('./assets/Images/Background/greenring.png'))
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
  
 class BackgroudFrame(pygame.sprite.Sprite):
     
@@ -74,7 +82,6 @@ class BackgroudFrame(pygame.sprite.Sprite):
         #creating a rect at position x,y (5,5) of size (150,198) which is the size of sprite 
         self.rect = self.image.get_rect()
         self.increaseindex = True
- 
     def update(self):
         #when the update method is called, we will increment the index
         if self.index >= len(self.images) - 1:
@@ -93,3 +100,21 @@ class BackgroudFrame(pygame.sprite.Sprite):
         print(self.index)
         #finally we will update the image that will be displayed
         self.image = self.images[self.index]
+
+ 
+
+class background_text_your_score(pygame.sprite.Sprite):
+    def __init__(self):
+       # Call the parent class (Sprite) constructor
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('./assets/Images/Background/high.png')
+        self.rect = self.image.get_rect()
+
+class background_text_high_score(pygame.sprite.Sprite):
+    def __init__(self):
+       # Call the parent class (Sprite) constructor
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('./assets/Images/Background/your.png')
+        self.rect = self.image.get_rect()
+
+

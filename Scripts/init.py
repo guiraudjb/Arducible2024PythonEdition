@@ -13,6 +13,7 @@ game_timer = pygame.time.get_ticks()
 
 #initialise font text
 GAME_FONT = pygame.font.Font("./assets/fonts/FUTRFW.TTF", 48)
+Arcade_Font = pygame.font.Font("./assets/fonts/ARCADE_I.TTF", 196)
 FONT = pygame.font.Font("./assets/fonts/FUTRFW.TTF", 48)
 FONT.set_bold(True)
 

@@ -2,7 +2,7 @@ import pygame
 from pygame import *
 pygame.init()
 from Scripts.init import * # load config.ini and some variables
-from Scripts.Sprites import Cible,Background,BackgroudFrame # load sprites
+from Scripts.Sprites import Cible,Background,BackgroudFrame,background_text_your_score,background_text_high_score,ColoredRing# load sprites
 
 def init_game():
     global cible1
@@ -10,7 +10,7 @@ def init_game():
     global cible3
     cible1 = Cible()
     cible1.image = pygame.transform.scale(cible1.image, (384, 384))
-    cible1.rect.x = 288
+    cible1.rect.x = 188
     cible1.rect.y = 600
 
     cible2 = Cible()
@@ -21,8 +21,17 @@ def init_game():
     cible3 = Cible()
     cible3.image = cible3.images[1]
     cible3.image = pygame.transform.scale(cible3.image, (384, 384))
-    cible3.rect.x = 1248
+    cible3.rect.x = 1348
     cible3.rect.y = 600
+    
+    ending_screen_text_high.rect.x = 478
+    ending_screen_text_high.rect.y = 110    
+    
+    ending_screen_text_your.rect.x = 478
+    ending_screen_text_your.rect.y = 650
+    
+
+
 
 def next_gamestate():
     global time_left
@@ -34,7 +43,7 @@ def next_gamestate():
     global ingamebackground
     if gamestate == 0:
         gamestate = 1
-        ingamebackground.image = ingamebackground.images[1]
+        ingamebackground.image = ingamebackground.images[0]
         time_left = game_length
         score = 0
     elif gamestate == 1:
@@ -43,7 +52,6 @@ def next_gamestate():
         time_left = ending_length
     elif gamestate == 2:
         gamestate = 0
-        ingamebackground.image = ingamebackground.images[0]
         time_left = intro_length
         pygame.mixer.music.load('./assets/Sounds/VoicesAI/readytogo.wav')
         pygame.mixer.music.play(1)
@@ -59,10 +67,10 @@ def showcam():
     mycam.rect.x = mycam.rect.x + Decalagex
     ecran.blit(mycam.images, mycam.rect)
    
-    if mycam.zoneinterdite:
-        draw_ellipse_angle(ecran, (255, 0, 0), (848, 0, mycam.LargeurChampCamera, 384), 0, 5)
-    else:
-        draw_ellipse_angle(ecran, (0, 255, 0), (848, 0, mycam.LargeurChampCamera, 384), 0, 5)
+    #if mycam.zoneinterdite:
+    #    draw_ellipse_angle(ecran, (255, 0, 0), (848, 0, mycam.LargeurChampCamera, 384), 0, 5)
+    #else:
+    #    draw_ellipse_angle(ecran, (0, 255, 0), (848, 0, mycam.LargeurChampCamera, 384), 0, 5)
         
 def countdown():
     global old_timer
@@ -94,6 +102,9 @@ def draw_ellipse_angle(surface, color, rect, angle, width=0):
 #initialise background table
 introbackground = BackgroudFrame()
 ingamebackground = Background()
+camring = ColoredRing()
+ending_screen_text_your = background_text_your_score()
+ending_screen_text_high = background_text_high_score()
 
 #initialise webcam if actived in config.ini
 if active_webcam:
@@ -207,7 +218,12 @@ while continuer:
             if mycam.zoneinterdite == True:
                 Info_image = FONT.render("Go to the shooting zone !!!", True, (255, 0, 0))
                 Info_image_rect = Info_image.get_rect()
-                ecran.blit(Info_image,(LARGEUR_ECRAN/2-Info_image_rect.right/2, 444))
+                ecran.blit(Info_image,(LARGEUR_ECRAN/2-Info_image_rect.right/2, 592))
+                camring.image = camring.images[0]
+                ecran.blit(camring.image, (831,0))
+            else:
+                camring.image = camring.images[1]
+                ecran.blit(camring.image, (831,0))
         else:
             ecran.blit(ingamebackground.image, ingamebackground.rect)
         
@@ -293,11 +309,33 @@ while continuer:
         ecran.blit(cible1.image, cible1.rect)
         ecran.blit(cible2.image, cible2.rect)
         ecran.blit(cible3.image, cible3.rect)
-        Time_left_image = FONT.render("Time left : " + str(time_left), True, (66, 236, 255))
+        #Time_left_image = FONT.render("Time left : " + str(time_left), True, (66, 236, 255))
+        #ecran.blit(Time_left_image,(10,10))
         
-        ecran.blit(Time_left_image,(10,10))
+        if time_left <= 15:
+            Arcade_center_image = Arcade_Font.render(str(time_left), True, (255, 0, 0))
+        elif time_left <= 30:
+            Arcade_center_image = Arcade_Font.render(str(time_left), True, (255, 128, 0))
+        elif time_left <= 45:
+            Arcade_center_image = Arcade_Font.render(str(time_left), True, (255, 255, 0))
+        elif time_left >= 60:
+            Arcade_center_image = Arcade_Font.render(str(time_left), True, (255, 233, 0))
+        else:
+            Arcade_center_image = Arcade_Font.render(str(time_left), True, (0, 255, 0))
+
+
+
+        #define time left position and blit
+        if len(str(time_left)) == 1:
+            ecran.blit(Arcade_center_image,(894,400))
+        if len(str(time_left)) == 2:
+            ecran.blit(Arcade_center_image,(794,400))        
+        if len(str(time_left)) == 3:
+            ecran.blit(Arcade_center_image,(696,400))
+                  
         Score_image = FONT.render("Score     : " + str(score), True, (66, 236, 255))
         ecran.blit(Score_image,(10,106))
+
         pygame.display.flip()
         
         if time_left <= 0:
@@ -344,10 +382,15 @@ while continuer:
         ecran.blit(ingamebackground.image, ingamebackground.rect)
         Time_left_image = FONT.render("Time left  : " + str(time_left), True, (66, 236, 255))
         ecran.blit(Time_left_image,(10,10))
-        Score_image = FONT.render("Your score : " + str(score), True, (66, 236, 255))
-        ecran.blit(Score_image,(10,106))
-        High_score_image = FONT.render("High score : " + str(high_score), True, (66, 236, 255))
-        ecran.blit(High_score_image, (10,202))
+        
+        ecran.blit(ending_screen_text_high.image, ending_screen_text_high.rect)
+        High_score_image = Arcade_Font.render(str(high_score), True, (66, 236, 255))
+        ecran.blit(High_score_image, (892,810))
+        
+        ecran.blit(ending_screen_text_your.image, ending_screen_text_your.rect)
+        Score_image = Arcade_Font.render(str(score), True, (66, 236, 255))
+        ecran.blit(Score_image,(892,270))
+
         pygame.display.flip()
         
         if time_left <= 0:
