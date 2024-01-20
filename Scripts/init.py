@@ -11,14 +11,7 @@ clock = pygame.time.Clock()
 old_timer = pygame.time.get_ticks()
 game_timer = pygame.time.get_ticks()
 
-#initialise font text
-GAME_FONT = pygame.font.Font("./assets/fonts/FUTRFW.TTF", 48)
-Arcade_Font = pygame.font.Font("./assets/fonts/NeonSans.ttf", 196)
-FONT = pygame.font.Font("./assets/fonts/NEON GLOW-Hollow.otf", 196)
-FontDel2 = pygame.font.Font("./assets/fonts/NEON GLOW-Hollow.otf",196)
-FontDel1 = pygame.font.Font("./assets/fonts/NEON GLOW.otf",196)
 
-#FontDel1.set_bold(True)
 
 
 LARGEUR_ECRAN =1920
@@ -32,7 +25,7 @@ gamestate = 0
 
 oldcibleencours = cibleencours
 continuer = True
-debug_line = True
+
 
 # parse config.ini and create if not exist
 if not os.path.exists("config.ini"):
@@ -54,6 +47,13 @@ if not os.path.exists("config.ini"):
     f.write("Music = True\n")
     f.write("Effects = True\n")
     f.write("FadeoutTime = 3000\n")
+    f.write("\n")
+    f.write("[Police]\n")
+    f.write("Size = 196\n")
+    f.write("\n")
+    f.write("[Debug]\n")
+    f.write("DebugLine = True\n")
+    
     # Fermer le fichier
     f.close()
 
@@ -74,10 +74,26 @@ if os.path.exists("config.ini"):
         background_music_string = config["Audio"]["Music"]
         sound_effects_string = config["Audio"]["Effects"]
         FadeoutTime = int(config["Audio"]["FadeoutTime"])
+        debug_line_string = (config["Debug"]["DebugLine"])
+        Fontsize = int(config["Police"]["Size"])
         f.close
 
 
 time_left = intro_length
+
+#initialise font text
+FontDel2 = pygame.font.Font("./assets/fonts/NEON GLOW-Hollow.otf",Fontsize)
+FontDel1 = pygame.font.Font("./assets/fonts/NEON GLOW.otf",Fontsize)
+red = (204, 0, 0)
+redlight = (239, 41, 41)
+#orange =
+#orangelight =
+#yellow =
+#yellowlight =
+blue = (66, 0, 255)
+bluelight =(66, 236, 255)
+#green =
+#green light =
 
 if active_webcam_string == 'True':
     active_webcam = True
@@ -99,3 +115,8 @@ if sound_effects_string == 'True':
     sound_effects = True
 else:
     sound_effects = False
+    
+if debug_line_string == 'True':
+    debug_line = True
+else:
+    debug_line = False

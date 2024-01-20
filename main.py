@@ -24,8 +24,6 @@ def init_game():
     cible3.rect.x = 1348
     cible3.rect.y = 700
     
-
-
 def next_gamestate():
     global time_left
     global gamestate
@@ -177,14 +175,14 @@ def draw_intro_text():
     ecran.blit(timeleft_center_image1,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height/2))
     ecran.blit(timeleft_center_image2,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height/2))
     
-    HighScore_image1 = FontDel1.render("HIGH SCORE", True, (66, 236, 255))
-    HighScore_image2 = FontDel2.render("HIGH SCORE", True, (66, 0, 255))
+    HighScore_image1 = FontDel1.render("HIGH SCORE", True, bluelight)
+    HighScore_image2 = FontDel2.render("HIGH SCORE", True, blue)
     HighScore_center_image1_width, HighScore_center_image1_height = HighScore_image1.get_rect().size
     ecran.blit(HighScore_image1,(1920/2 - HighScore_center_image1_width  / 2,5))
     ecran.blit(HighScore_image2,(1920/2 - HighScore_center_image1_width  / 2,5))
 
-    HighScore_image1_text = FontDel1.render(str(high_score), True, (239, 41, 41))
-    HighScore_image2_text = FontDel2.render(str(high_score), True, (204, 0, 0))
+    HighScore_image1_text = FontDel1.render(str(high_score), True, bluelight)
+    HighScore_image2_text = FontDel2.render(str(high_score), True, blue)
     HighScore_center_image1_text_width, HighScore_center_image1_text_height = HighScore_image1_text.get_rect().size
     ecran.blit(HighScore_image1_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
     ecran.blit(HighScore_image2_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
@@ -226,7 +224,7 @@ else:
 
 # run the background game music
 if background_music == True:
-    music = pygame.mixer.Sound('./assets/Sounds/guardians.mp3')
+    music = pygame.mixer.Sound('./assets/Sounds/Neon City.mp3')
     channel1 = pygame.mixer.Channel(0)
     channel1.play(music, loops = -1)
     
