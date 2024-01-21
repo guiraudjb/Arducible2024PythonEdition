@@ -102,11 +102,19 @@ def debug_lines():
     pygame.draw.line(ecran, red, (0,540), (1920,540), 1)
     pygame.draw.line(ecran, red, (0,720), (1920,720), 1)
 
+def draw_go_to_shooting_zone():
+    getaway_center_image1 = FontDel1.render("Go to the shooting zone", True, redlight)
+    getaway_center_image2 = FontDel2.render("Go to the shooting zone", True, red)
+       
+    getaway_center_image1_width, getaway_center_image1_height = getaway_center_image1.get_rect().size
+    ecran.blit(getaway_center_image1,(1920/2 - getaway_center_image1_width/2, 1080*55/100))
+    ecran.blit(getaway_center_image2,(1920/2 - getaway_center_image1_width/2, 1080*55/100))
+
 
 def draw_intro_text():
 
-    timeleft_center_image1 = FontDel1.render(str(time_left), True, (0, 255, 0))
-    timeleft_center_image2 = FontDel2.render(str(time_left), True, (0, 200, 0))
+    timeleft_center_image1 = FontDel1.render(str(time_left), True, bluelight)
+    timeleft_center_image2 = FontDel2.render(str(time_left), True, blue)
        
     timeleft_center_image1_width, timeleft_center_image1_height = timeleft_center_image1.get_rect().size
     ecran.blit(timeleft_center_image1,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height/2))
@@ -125,72 +133,85 @@ def draw_intro_text():
     ecran.blit(HighScore_image2_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
    
 
-def draw_ending_text():
-
-    timeleft_center_image1 = FontDel1.render(str(time_left), True, (0, 255, 0))
-    timeleft_center_image2 = FontDel2.render(str(time_left), True, (0, 200, 0))
-    timeleft_center_image1_width, timeleft_center_image1_height = timeleft_center_image1.get_rect().size
-    ecran.blit(timeleft_center_image1,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height+20))
-    ecran.blit(timeleft_center_image2,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height+20))
-        
-    HighScore_image1 = FontDel1.render("HIGH SCORE", True, (66, 236, 255))
-    HighScore_image2 = FontDel2.render("HIGH SCORE", True, (66, 0, 255))
-    HighScore_center_image1_width, HighScore_center_image1_height = HighScore_image1.get_rect().size
-    ecran.blit(HighScore_image1,(1920/2 - HighScore_center_image1_width  / 2,5))
-    ecran.blit(HighScore_image2,(1920/2 - HighScore_center_image1_width  / 2,5))
-
-    HighScore_image1_text = FontDel1.render(str(high_score), True, (239, 41, 41))
-    HighScore_image2_text = FontDel2.render(str(high_score), True, (204, 0, 0))
-    HighScore_center_image1_text_width, HighScore_center_image1_text_height = HighScore_image1_text.get_rect().size
-    ecran.blit(HighScore_image1_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
-    ecran.blit(HighScore_image2_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
-    
-    
-    YourScore_image1_text = FontDel1.render("YOUR SCORE", True, (66, 236, 255))
-    YourScore_image2_text = FontDel2.render("YOUR SCORE", True, (66, 0, 255))
-    YourScore_center_image1_text_width, YourScore_center_image1_text_height = YourScore_image1_text.get_rect().size
-    ecran.blit(YourScore_image1_text,(1920/2 - YourScore_center_image1_text_width  / 2,540))
-    ecran.blit(YourScore_image2_text,(1920/2 - YourScore_center_image1_text_width  / 2,540))
-    
-    YourScore_image1 = FontDel1.render(str(score), True, (66, 236, 255))
-    YourScore_image2 = FontDel2.render(str(score), True, (66, 0, 255))
-    YourScore_center_image1_width, YourScore_center_image1_height = YourScore_image1.get_rect().size
-    ecran.blit(YourScore_image1,(1920/2 - YourScore_center_image1_width  / 2,720))
-    ecran.blit(YourScore_image2,(1920/2 - YourScore_center_image1_width  / 2,720))
-
     
 def draw_ingame_text():
     global ecran
                     
     if time_left <= 15:
         #red
-        Arcade_center_image1 =FontDel1.render(str(time_left), True, (239, 41, 41))
-        Arcade_center_image2 =FontDel2.render(str(time_left), True, (204, 0, 0))
+        Arcade_center_image1 =FontDel1.render(str(time_left), True, redlight)
+        Arcade_center_image2 =FontDel2.render(str(time_left), True, red)
     elif time_left <= 30:
         #orange
-        Arcade_center_image1 = FontDel1.render(str(time_left), True, (252, 175, 62))
-        Arcade_center_image2 = FontDel2.render(str(time_left), True, (245, 121, 0))
+        Arcade_center_image1 = FontDel1.render(str(time_left), True, orangelight)
+        Arcade_center_image2 = FontDel2.render(str(time_left), True, orange)
     elif time_left <= 45:
         #yellow
-        Arcade_center_image1 = FontDel1.render(str(time_left), True, (252, 233, 79))
-        Arcade_center_image2 = FontDel2.render(str(time_left), True, (237, 212, 0))
+        Arcade_center_image1 = FontDel1.render(str(time_left), True, yellowlight)
+        Arcade_center_image2 = FontDel2.render(str(time_left), True, yellow)
     elif time_left >= 60:
         #green
-        Arcade_center_image1 = FontDel1.render(str(time_left), True, (0, 255, 0))
-        Arcade_center_image2 = FontDel2.render(str(time_left), True, (0, 200, 0))
+        Arcade_center_image1 = FontDel1.render(str(time_left), True, greenlight)
+        Arcade_center_image2 = FontDel2.render(str(time_left), True, green)
     else:
         #green
-        Arcade_center_image1 = FontDel1.render(str(time_left), True, (0, 255, 0))
-        Arcade_center_image2 = FontDel2.render(str(time_left), True, (0, 200, 0))
+        Arcade_center_image1 = FontDel1.render(str(time_left), True, greenlight)
+        Arcade_center_image2 = FontDel2.render(str(time_left), True, green)
        
     Arcade_center_image1_width, Arcade_center_image1_height = Arcade_center_image1.get_rect().size
     ecran.blit(Arcade_center_image1,(1920/2 - Arcade_center_image1_width/2,1080/2 - Arcade_center_image1_height/2))
     ecran.blit(Arcade_center_image2,(1920/2 - Arcade_center_image1_width/2,1080/2 - Arcade_center_image1_height/2))
+    
+    
+    Score_image1_text = FontDel1.render("POINTS", True, bluelight)
+    Score_image2_text = FontDel2.render("POINTS", True, blue)
+    Score_image1_text_width, Score_image1_text_height = Score_image1_text.get_rect().size
+   
+    ecran.blit(Score_image1_text,(1920/5 - Score_image1_text_width/2,106))
+    ecran.blit(Score_image2_text,(1920/5 - Score_image1_text_width/2,106))
+    
+    Score_image1 = FontDel1.render(str(score), True, bluelight)
+    Score_image2 = FontDel2.render(str(score), True, blue)
+    Score_image1_width, Score_image1_height = Score_image1.get_rect().size
+   
+    ecran.blit(Score_image1,(1920/5 - Score_image1_width/2,1080/3 - Score_image1_height/2))
+    ecran.blit(Score_image2,(1920/5 - Score_image1_width/2,1080/3 - Score_image1_height/2))
 
-    Score_image1 = FontDel1.render("PTS : " + str(score), True, (66, 236, 255))
-    ecran.blit(Score_image1,(10,106))
-    Score_image2 = FontDel2.render("PTS : " + str(score), True, (66, 0, 255))
-    ecran.blit(Score_image2,(10,106))
+
+
+def draw_ending_text():
+
+    timeleft_center_image1 = FontDel1.render(str(time_left), True, greenlight)
+    timeleft_center_image2 = FontDel2.render(str(time_left), True, green)
+    timeleft_center_image1_width, timeleft_center_image1_height = timeleft_center_image1.get_rect().size
+    ecran.blit(timeleft_center_image1,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height+20))
+    ecran.blit(timeleft_center_image2,(1920/2 - timeleft_center_image1_width/2,1080/2 - timeleft_center_image1_height+20))
+        
+    HighScore_image1 = FontDel1.render("HIGH SCORE", True, bluelight)
+    HighScore_image2 = FontDel2.render("HIGH SCORE", True, blue)
+    HighScore_center_image1_width, HighScore_center_image1_height = HighScore_image1.get_rect().size
+    ecran.blit(HighScore_image1,(1920/2 - HighScore_center_image1_width  / 2,5))
+    ecran.blit(HighScore_image2,(1920/2 - HighScore_center_image1_width  / 2,5))
+
+    HighScore_image1_text = FontDel1.render(str(high_score), True, redlight)
+    HighScore_image2_text = FontDel2.render(str(high_score), True, red)
+    HighScore_center_image1_text_width, HighScore_center_image1_text_height = HighScore_image1_text.get_rect().size
+    ecran.blit(HighScore_image1_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
+    ecran.blit(HighScore_image2_text,(1920/2 - HighScore_center_image1_text_width  / 2,185))
+    
+    
+    YourScore_image1_text = FontDel1.render("YOUR SCORE", True, yellowlight)
+    YourScore_image2_text = FontDel2.render("YOUR SCORE", True, yellow)
+    YourScore_center_image1_text_width, YourScore_center_image1_text_height = YourScore_image1_text.get_rect().size
+    ecran.blit(YourScore_image1_text,(1920/2 - YourScore_center_image1_text_width  / 2,540))
+    ecran.blit(YourScore_image2_text,(1920/2 - YourScore_center_image1_text_width  / 2,540))
+    
+    YourScore_image1 = FontDel1.render(str(score), True, yellowlight)
+    YourScore_image2 = FontDel2.render(str(score), True, yellow)
+    YourScore_center_image1_width, YourScore_center_image1_height = YourScore_image1.get_rect().size
+    ecran.blit(YourScore_image1,(1920/2 - YourScore_center_image1_width  / 2,720))
+    ecran.blit(YourScore_image2,(1920/2 - YourScore_center_image1_width  / 2,720))
+
 
 def draw_cibles():
     global ecran
@@ -347,9 +368,7 @@ while continuer:
             
                     
             if mycam.zoneinterdite == True:
-               #Info_image = FONT.render("Go to the shooting zone !!!", True, (255, 0, 0))
-               #Info_image_rect = Info_image.get_rect()
-               #ecran.blit(Info_image,(LARGEUR_ECRAN/2-Info_image_rect.right/2, 492))
+               draw_go_to_shooting_zone()
                camring.image = camring.images[0]
                ecran.blit(camring.image, (831,0))
             else:
