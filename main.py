@@ -12,18 +12,18 @@ def init_game():
     global cible2
     global cible3
     cible1 = Cible()
-    cible1.image = pygame.transform.scale(cible1.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
+    #cible1.image = pygame.transform.scale(cible1.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
     cible1.rect.x = LARGEUR_ECRAN*0.15 - LARGEUR_ECRAN*0.2/2
     cible1.rect.y = HAUTEUR_ECRAN * 0.82 - HAUTEUR_ECRAN*0.35/2
 
     cible2 = Cible()
-    cible2.image = pygame.transform.scale(cible2.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
+    #cible2.image = pygame.transform.scale(cible2.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
     cible2.rect.x = LARGEUR_ECRAN/2 - LARGEUR_ECRAN*0.2/2
     cible2.rect.y = HAUTEUR_ECRAN * 0.82 - HAUTEUR_ECRAN*0.35/2
 
     cible3 = Cible()
     cible3.image = cible3.images[1]
-    cible3.image = pygame.transform.scale(cible3.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
+    #cible3.image = pygame.transform.scale(cible3.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
     cible3.rect.x = LARGEUR_ECRAN*0.85 - LARGEUR_ECRAN*0.2/2
     cible3.rect.y = HAUTEUR_ECRAN * 0.82 - HAUTEUR_ECRAN*0.35/2
     
@@ -68,8 +68,7 @@ def ciblealeatoire():
     oldcibleencours = cibleencours 
 
 def showcam():
-    mycam.rect.x = mycam.rect.x + Decalagex
-    ecran.blit(mycam.images, mycam.rect)
+    ecran.blit(mycam.images, (LARGEUR_ECRAN/2-mycam.width/2,0))
  
 def countdown():
     global old_timer
@@ -96,6 +95,19 @@ def draw_ellipse_angle(surface, color, rect, angle, width=0):
     pygame.draw.ellipse(shape_surf, color, (0, 0, *target_rect.size), width)
     rotated_surf = pygame.transform.rotate(shape_surf, angle)
     surface.blit(rotated_surf, rotated_surf.get_rect(center = target_rect.center))
+
+def draw_camring():
+    global ecran
+    global camring
+
+    if mycam.zoneinterdite == True:
+        draw_go_to_shooting_zone()
+        camring.image = camring.images[0]
+        ecran.blit(camring.image, camring.rect)
+    else:
+        camring.image = camring.images[1]
+        ecran.blit(camring.image, camring.rect)
+    
     
 def debug_lines():
     global ecran
@@ -137,7 +149,6 @@ def draw_intro_text():
     ecran.blit(HighScore_image1_text,(LARGEUR_ECRAN/2 - HighScore_center_image1_text_width  / 2,HighScore_center_image1_text_height))
     ecran.blit(HighScore_image2_text,(LARGEUR_ECRAN/2 - HighScore_center_image1_text_width  / 2,HighScore_center_image1_text_height))
    
-
     
 def draw_ingame_text():
     global ecran
@@ -242,9 +253,9 @@ def draw_cibles():
         cible3.image = cible1.images[1]
         
     
-    cible1.image = pygame.transform.scale(cible1.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
-    cible2.image = pygame.transform.scale(cible2.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
-    cible3.image = pygame.transform.scale(cible3.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
+    #cible1.image = pygame.transform.scale(cible1.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
+    #cible2.image = pygame.transform.scale(cible2.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
+    #cible3.image = pygame.transform.scale(cible3.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
     ecran.blit(cible1.image, cible1.rect)
     ecran.blit(cible2.image, cible2.rect)
     ecran.blit(cible3.image, cible3.rect)
@@ -256,19 +267,24 @@ introbackground = BackgroudFrame()
 ingamebackground = Background()
 ingamebackground.image = pygame.transform.scale(ingamebackground.image, (LARGEUR_ECRAN, HAUTEUR_ECRAN))
 camring = ColoredRing()
+camring_width, camring_height = camring.image.get_rect().size
+camring.rect.x = LARGEUR_ECRAN/2 - camring_width/2
 
 #initialise webcam if actived in config.ini
 if active_webcam:
     try:
         from Scripts.opencvcam import Cam
         mycam = Cam()
+        mycam.update(mycam.cap, mycam.mp_drawing,mycam.mp_pose, mycam.LimiteBasseCamera, mycam.LimiteHauteCamera, mycam.LimiteGaucheCamera, mycam.LimiteDroiteCamera)
+        
+        
         if mycam.webcam_compatibility == True:
             webcam_compatibility = True
         else:
             webcam_compatibility = False
             
         if webcam_compatibility == True:
-            Decalagex = (LARGEUR_ECRAN - mycam.LargeurChampCamera) / 2 
+            
             ingamebackground.image = ingamebackground.images[1]
         else:
             webcam_zone_interdite = False
@@ -364,22 +380,16 @@ while continuer:
             if cam_timer - old_cam_timer >= 50:
                 old_cam_timer = cam_timer
                 mycam.update(mycam.cap, mycam.mp_drawing,mycam.mp_pose, mycam.LimiteBasseCamera, mycam.LimiteHauteCamera, mycam.LimiteGaucheCamera, mycam.LimiteDroiteCamera)
-                webcam_zone_interdite = mycam.zoneinterdite
                 showcam()
+                webcam_zone_interdite = mycam.zoneinterdite
+                
             else:
                 ecran.blit(ingamebackground.image, ingamebackground.rect)
             ecran.blit(ingamebackground.image, ingamebackground.rect)
             if DebugCam == True:
                showcam()
             
-                    
-            if mycam.zoneinterdite == True:
-               draw_go_to_shooting_zone()
-               camring.image = camring.images[0]
-               ecran.blit(camring.image, (831,0))
-            else:
-               camring.image = camring.images[1]
-               ecran.blit(camring.image, (831,0))
+            draw_camring()
         else:
             ecran.blit(ingamebackground.image, ingamebackground.rect)
 

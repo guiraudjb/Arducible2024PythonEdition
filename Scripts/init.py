@@ -16,8 +16,7 @@ old_cam_timer = pygame.time.get_ticks()
 cam_timer = pygame.time.get_ticks()
 
 
-LARGEUR_ECRAN =640
-HAUTEUR_ECRAN =360
+
 oldlevel = 0
 level = 1
 cibleencours = 2
@@ -50,8 +49,9 @@ if not os.path.exists("config.ini"):
     f.write("Effects = True\n")
     f.write("FadeoutTime = 1000\n")
     f.write("\n")
-    f.write("[Police]\n")
-    f.write("Size = 120\n")
+    f.write("[Resolution]\n")
+    f.write("#resolution value 1080 720 360 240 if empty resolution will be set to 1024x768\n")
+    f.write("Resolution = 1080\n")
     f.write("\n")
     f.write("[Debug]\n")
     f.write("DebugLine = False\n")
@@ -80,13 +80,30 @@ if os.path.exists("config.ini"):
         sound_effects_string = config["Audio"]["Effects"]
         FadeoutTime = int(config["Audio"]["FadeoutTime"])
         debug_line_string = (config["Debug"]["DebugLine"])
-        #Fontsize = int(config["Police"]["Size"])
+        resolution = int(config["Resolution"]["Resolution"])
         FPS = int(config["Debug"]["FPS"])
         ShowFps_string = config["Debug"]["ShowFps"]
         DebugCam_string = config["Debug"]["DebugCam"]
         f.close
 
 time_left = intro_length
+
+if resolution == 1080:
+    LARGEUR_ECRAN = 1920
+    HAUTEUR_ECRAN = 1080
+elif resolution == 720:
+    LARGEUR_ECRAN = 1280
+    HAUTEUR_ECRAN = 720
+elif resolution == 360:
+    LARGEUR_ECRAN = 640
+    HAUTEUR_ECRAN = 360
+elif resolution == 240:
+    LARGEUR_ECRAN = 426
+    HAUTEUR_ECRAN = 240
+else:
+    LARGEUR_ECRAN = 1024
+    HAUTEUR_ECRAN = 768
+
 Fontsize = round(HAUTEUR_ECRAN/10)
 #initialise font text
 FontDel2 = pygame.font.Font("./assets/fonts/NEON GLOW-Hollow.otf",Fontsize)

@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import pygame
+from Scripts.init import * # load config.ini and some variables
 
 class Cam(pygame.sprite.Sprite):
     def __init__(self):
@@ -14,8 +15,8 @@ class Cam(pygame.sprite.Sprite):
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_pose = mp.solutions.pose
         self.pose = self.mp_pose.Pose(min_detection_confidence=0.8, min_tracking_confidence=0.9)
-        self.Largeur=320
-        self.Hauteur=240
+        self.Largeur=640
+        self.Hauteur=480
         self.cap = cv2.VideoCapture(0)
         if not self.cap.isOpened():
             self.webcam_compatibility = False
@@ -58,8 +59,12 @@ class Cam(pygame.sprite.Sprite):
             mp_drawing.draw_landmarks(self.photo, self.results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
         self.photo = cv2.cvtColor(self.photo, cv2.COLOR_BGR2RGB)
         self.cam = pygame.surfarray.make_surface(self.photo)
-        self.cam = pygame.transform.scale(self.cam, (  1.45 * self.cam.get_width(),  self.cam.get_height()))
+        #self.cam = pygame.transform.scale(self.cam, (self.cam.get_width(),  self.cam.get_height()))
         self.cam = pygame.transform.rotate(self.cam, -90)
+        mycam_width, mycam_height = self.cam.get_rect().size
+        self.cam = pygame.transform.scale(self.cam, (mycam_width*LARGEUR_ECRAN/1920,1.45*mycam_height*HAUTEUR_ECRAN/1080))
+        #self.cam = pygame.transform.scale(self.cam, (200,300))
         self.images = self.cam
         self.rect = self.images.get_rect()
+        self.width, self.height = self.images.get_rect().size
         
