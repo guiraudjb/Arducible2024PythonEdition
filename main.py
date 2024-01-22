@@ -376,16 +376,11 @@ while continuer:
         
         
         if webcam_compatibility == True:
-            cam_timer = pygame.time.get_ticks()
-            if cam_timer - old_cam_timer >= 50:
-                old_cam_timer = cam_timer
-                mycam.update(mycam.cap, mycam.mp_drawing,mycam.mp_pose, mycam.LimiteBasseCamera, mycam.LimiteHauteCamera, mycam.LimiteGaucheCamera, mycam.LimiteDroiteCamera)
-                showcam()
-                webcam_zone_interdite = mycam.zoneinterdite
-                
-            else:
-                ecran.blit(ingamebackground.image, ingamebackground.rect)
+            mycam.update(mycam.cap, mycam.mp_drawing,mycam.mp_pose, mycam.LimiteBasseCamera, mycam.LimiteHauteCamera, mycam.LimiteGaucheCamera, mycam.LimiteDroiteCamera)
+            showcam()
+            webcam_zone_interdite = mycam.zoneinterdite
             ecran.blit(ingamebackground.image, ingamebackground.rect)
+            #ecran.blit(ingamebackground.image, ingamebackground.rect)
             if DebugCam == True:
                showcam()
             
