@@ -14,8 +14,8 @@ class Cam(pygame.sprite.Sprite):
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_pose = mp.solutions.pose
         self.pose = self.mp_pose.Pose(min_detection_confidence=0.8, min_tracking_confidence=0.9)
-        self.Largeur=640
-        self.Hauteur=480
+        self.Largeur=320
+        self.Hauteur=240
         self.cap = cv2.VideoCapture(0)
         if not self.cap.isOpened():
             self.webcam_compatibility = False

@@ -16,8 +16,8 @@ old_cam_timer = pygame.time.get_ticks()
 cam_timer = pygame.time.get_ticks()
 
 
-LARGEUR_ECRAN =1920
-HAUTEUR_ECRAN =1080
+LARGEUR_ECRAN =640
+HAUTEUR_ECRAN =360
 oldlevel = 0
 level = 1
 cibleencours = 2
@@ -86,7 +86,6 @@ if os.path.exists("config.ini"):
         DebugCam_string = config["Debug"]["DebugCam"]
         f.close
 
-
 time_left = intro_length
 
 #initialise font text
@@ -95,8 +94,8 @@ FontDel1 = pygame.font.Font("./assets/fonts/NEON GLOW.otf",Fontsize)
 #preset color for neon font
 red = (204, 0, 0)
 redlight = (239, 41, 41)
-orange = (204, 0, 0)
-orangelight = (239, 41, 41)
+orange = (245, 121, 0)
+orangelight = (252, 175, 62)
 yellow = (237, 212, 0)
 yellowlight =(255, 255, 79)
 blue = (66, 0, 255)
