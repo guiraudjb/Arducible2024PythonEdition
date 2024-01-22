@@ -80,14 +80,14 @@ if os.path.exists("config.ini"):
         sound_effects_string = config["Audio"]["Effects"]
         FadeoutTime = int(config["Audio"]["FadeoutTime"])
         debug_line_string = (config["Debug"]["DebugLine"])
-        Fontsize = int(config["Police"]["Size"])
+        #Fontsize = int(config["Police"]["Size"])
         FPS = int(config["Debug"]["FPS"])
         ShowFps_string = config["Debug"]["ShowFps"]
         DebugCam_string = config["Debug"]["DebugCam"]
         f.close
 
 time_left = intro_length
-
+Fontsize = round(HAUTEUR_ECRAN/10)
 #initialise font text
 FontDel2 = pygame.font.Font("./assets/fonts/NEON GLOW-Hollow.otf",Fontsize)
 FontDel1 = pygame.font.Font("./assets/fonts/NEON GLOW.otf",Fontsize)
