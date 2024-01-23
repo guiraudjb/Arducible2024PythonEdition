@@ -36,6 +36,7 @@ def next_gamestate():
     global ending_length
     global ingamebackground
     global webcam_compatibility
+    global waiting
     if gamestate == 0:
         gamestate = 1
         if webcam_compatibility == True:
@@ -57,9 +58,8 @@ def next_gamestate():
     elif gamestate == 2:
         gamestate = 0
         time_left = intro_length
-        pygame.mixer.music.load('./assets/Sounds/VoicesAI/readytogo.wav')
-        pygame.mixer.music.play(1)
-
+        waiting = True
+        
 def ciblealeatoire():
     global cibleencours
     global oldcibleencours
@@ -87,7 +87,7 @@ def update_score():
         pygame.mixer.music.play(1)
     
     score = score + 1
-    time_left = time_left + 5
+    time_left = time_left + bonus_time
 
 def draw_ellipse_angle(surface, color, rect, angle, width=0):
     target_rect = pygame.Rect(rect)
@@ -148,7 +148,13 @@ def draw_intro_text():
     HighScore_center_image1_text_width, HighScore_center_image1_text_height = HighScore_image1_text.get_rect().size
     ecran.blit(HighScore_image1_text,(LARGEUR_ECRAN/2 - HighScore_center_image1_text_width  / 2,HighScore_center_image1_text_height))
     ecran.blit(HighScore_image2_text,(LARGEUR_ECRAN/2 - HighScore_center_image1_text_width  / 2,HighScore_center_image1_text_height))
-   
+    
+    info_text1 = FontDel1.render("Levez les main en l'air", True, bluelight)
+    info_text2 = FontDel2.render("Levez les main en l'air", True, blue)
+    info_text_width, info_text_height = info_text1.get_rect().size
+    ecran.blit(info_text1,(LARGEUR_ECRAN/2 - info_text_width  / 2,HAUTEUR_ECRAN*3/4 - info_text_height/2))
+    ecran.blit(info_text2,(LARGEUR_ECRAN/2 - info_text_width  / 2,HAUTEUR_ECRAN*3/4 - info_text_height/2))
+
     
 def draw_ingame_text():
     global ecran
@@ -365,10 +371,23 @@ while continuer:
             FPS2 = FontDel2.render(fps, True, bluelight)
             ecran.blit(FPS1,(0,0))
             ecran.blit(FPS2,(0,0))
-        
-        pygame.display.flip()
+        while waiting:    
+            if webcam_compatibility == True:
+                mycam.updateintro(mycam.cap, mycam.mp_drawing,mycam.mp_pose)
+                showcam()
+                pygame.display.flip()
+                if mycam.results.pose_landmarks:
+                    if mycam.LeftHandUp == True and mycam.RightHandUp == True :
+                        player = mycam.images
+                        waiting = False
+                        print(mycam.LeftHandUp, mycam.RightHandUp)
+                
+
         if time_left <= 0:
             next_gamestate()
+
+        pygame.display.flip()
+
         
     #-----------------------Game scene----------------------------------
     if gamestate == 1:
@@ -512,6 +531,7 @@ while continuer:
             FPS2 = FontDel2.render(fps, True, bluelight)
             ecran.blit(FPS1,(200,0))
             ecran.blit(FPS2,(200,0))
+            ecran.blit(player, (0,0))
         
         pygame.display.flip()
         

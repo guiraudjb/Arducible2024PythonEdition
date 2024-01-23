@@ -38,6 +38,9 @@ if not os.path.exists("config.ini"):
     f.write("game_length = 60\n")
     f.write("ending_length = 10\n")
     f.write("\n")
+    f.write("[BonusTime]\n")
+    f.write("time = 5\n")
+    f.write("\n")
     f.write("[CamActivation]\n")
     f.write("Webcam = True\n")
     f.write("\n")
@@ -74,6 +77,7 @@ if os.path.exists("config.ini"):
         intro_length = int(config["TimeSetting"]["intro_length"])
         game_length = int(config["TimeSetting"]["game_length"])
         ending_length = int(config["TimeSetting"]["ending_length"])
+        bonus_time = int(config["BonusTime"]["time"])
         active_webcam_string = (config["CamActivation"]["Webcam"])
         fullscreen_string = config["Screen"]["Fullscreen"]
         background_music_string = config["Audio"]["Music"]
@@ -156,3 +160,5 @@ if DebugCam_string == 'True':
     DebugCam = True
 else:
     DebugCam = False
+
+waiting = True

@@ -14,7 +14,8 @@ class Cam(pygame.sprite.Sprite):
         self.PourcentageHauteurCamera=55
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_pose = mp.solutions.pose
-        self.pose = self.mp_pose.Pose(min_detection_confidence=0.8, min_tracking_confidence=0.9)
+        #self.pose = self.mp_pose.Pose(min_detection_confidence=0.8, min_tracking_confidence=0.9)
+        self.pose = self.mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
         self.Largeur=640
         self.Hauteur=480
         self.cap = cv2.VideoCapture(0)
@@ -45,13 +46,15 @@ class Cam(pygame.sprite.Sprite):
         self.results = self.pose.process(self.RGB)
         
         if self.results.pose_landmarks:
-            for i in range(1, 32):
+            #if self.results.pose_landmarks.landmark[0].y*self.HauteurChampCamera > 0 and self.results.pose_landmarks.landmark[0].y*self.HauteurChampCamera < self.HauteurChampCamera and self.results.pose_landmarks.landmark[32].y*self.HauteurChampCamera > 0 and self.results.pose_landmarks.landmark[32].y*self.HauteurChampCamera < self.HauteurChampCamera  and self.results.pose_landmarks.landmark[33].y*self.HauteurChampCamera > 0 and self.results.pose_landmarks.landmark[33].y*self.HauteurChampCamera < self.HauteurChampCamera
+            for i in range(27, 33):
                 self.posY = self.results.pose_landmarks.landmark[i].y*self.HauteurChampCamera
                 if self.posY > 0 and self.posY < self.HauteurChampCamera :
                     self.zoneinterdite = False
                 else:
                     self.zoneinterdite = True
                     mp_drawing.draw_landmarks(self.photo, self.results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+                    break
         else:
             self.zoneinterdite = True
         
@@ -64,7 +67,52 @@ class Cam(pygame.sprite.Sprite):
         mycam_width, mycam_height = self.cam.get_rect().size
         self.cam = pygame.transform.scale(self.cam, (mycam_width*LARGEUR_ECRAN/1920,1.45*mycam_height*HAUTEUR_ECRAN/1080))
         #self.cam = pygame.transform.scale(self.cam, (200,300))
+        if self.results.pose_landmarks:
+            if self.results.pose_landmarks.landmark[1].y*self.HauteurChampCamera >= self.results.pose_landmarks.landmark[16].y*self.HauteurChampCamera:
+                self.brasGaucheUp = True
+                #print(self.brasGaucheUp)
+            else:
+                self.brasGaucheUp = False
+                #print(self.brasGaucheUp)
+        #else:
+        #    self.brasGaucheUp = False
         self.images = self.cam
         self.rect = self.images.get_rect()
         self.width, self.height = self.images.get_rect().size
-        
+
+    def updateintro(self, cap, mp_drawing, mp_pose):
+        self.photo = cap.read()[1]
+        self.photo = cv2.flip(self.photo,1)
+        self.RGB = cv2.cvtColor(self.photo, cv2.COLOR_BGR2RGB)
+        self.results = self.pose.process(self.RGB)
+
+        if self.results.pose_landmarks:
+            mp_drawing.draw_landmarks(self.photo, self.results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+            if self.results.pose_landmarks.landmark[1].y*self.HauteurChampCamera >= self.results.pose_landmarks.landmark[16].y*self.HauteurChampCamera:
+                self.LeftHandUp = True
+                print("main gauche")
+            else:
+                self.LeftHandUp = False
+
+            if self.results.pose_landmarks.landmark[1].y*self.HauteurChampCamera >= self.results.pose_landmarks.landmark[17].y*self.HauteurChampCamera:
+                self.RightHandUp = True
+                print("main droite")
+            else:
+                self.RightHandUp = False
+        else:
+            self.LeftHandUp = False
+            self.RightHandUp = False
+
+
+
+        self.cam = pygame.surfarray.make_surface(self.RGB)
+        self.cam = pygame.transform.rotate(self.cam, -90)
+        mycam_width, mycam_height = self.cam.get_rect().size
+        self.cam = pygame.transform.scale(self.cam, (mycam_width*LARGEUR_ECRAN/1920,1.45*mycam_height*HAUTEUR_ECRAN/1080))
+
+
+        mycam_width, mycam_height = self.cam.get_rect().size
+        self.cam = pygame.transform.scale(self.cam, (mycam_width*LARGEUR_ECRAN/1920,mycam_height*HAUTEUR_ECRAN/1080))
+        self.images = self.cam
+        self.rect = self.images.get_rect()
+        self.width, self.height = self.images.get_rect().size
