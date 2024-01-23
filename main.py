@@ -306,12 +306,19 @@ else:
     webcam_zone_interdite = False
     ingamebackground.image = ingamebackground.images[0]
 
-#initialise the screen
 pygame.display.set_caption("Arducible PÉTANQUE GAME") # set window title
+icon = pygame.image.load("assets/icons/192x192.png")
+pygame.display.set_icon(icon)
+# Charge l'image de l'icone
+
+
 if Fullscreen:
     ecran = pygame.display.set_mode((LARGEUR_ECRAN, HAUTEUR_ECRAN), pygame.SCALED | pygame.FULLSCREEN, vsync=1)
 else:
     ecran = pygame.display.set_mode((LARGEUR_ECRAN, HAUTEUR_ECRAN), pygame.SCALED )
+
+
+#initialise the screen
 
 # run the background game music
 if background_music == True:
