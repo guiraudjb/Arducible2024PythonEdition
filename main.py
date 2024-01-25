@@ -149,8 +149,8 @@ def draw_intro_text():
     ecran.blit(HighScore_image1_text,(LARGEUR_ECRAN/2 - HighScore_center_image1_text_width  / 2,HighScore_center_image1_text_height))
     ecran.blit(HighScore_image2_text,(LARGEUR_ECRAN/2 - HighScore_center_image1_text_width  / 2,HighScore_center_image1_text_height))
     
-    info_text1 = FontDel1.render("Levez les main en l'air", True, bluelight)
-    info_text2 = FontDel2.render("Levez les main en l'air", True, blue)
+    info_text1 = FontDel1.render("Haut les mains", True, bluelight)
+    info_text2 = FontDel2.render("Haut les mains", True, blue)
     info_text_width, info_text_height = info_text1.get_rect().size
     ecran.blit(info_text1,(LARGEUR_ECRAN/2 - info_text_width  / 2,HAUTEUR_ECRAN*3/4 - info_text_height/2))
     ecran.blit(info_text2,(LARGEUR_ECRAN/2 - info_text_width  / 2,HAUTEUR_ECRAN*3/4 - info_text_height/2))
