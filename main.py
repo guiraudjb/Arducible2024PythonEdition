@@ -4,7 +4,7 @@ from pygame import *
 pygame.init()
 from Scripts.init import * # load config.ini and some variables
 from Scripts.Sprites import *# load sprites
-
+import cv2
 #---------------------Procedures et fonctions---------------------------
 
 def init_game():
@@ -386,6 +386,20 @@ while continuer:
                 if mycam.results.pose_landmarks:
                     if mycam.LeftHandUp == True and mycam.RightHandUp == True :
                         player = mycam.images
+                        
+                        array = pygame.surfarray.pixels3d(player)
+                        # Convertir l'image en nuances de gris
+                        gray_image = cv2.cvtColor(array, cv2.COLOR_BGR2GRAY)
+                        smoothGrayScale = cv2.medianBlur(gray_image, 5)
+                        getEdge = cv2.adaptiveThreshold(smoothGrayScale, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 9, 9)
+                        colorImage = cv2.bilateralFilter(array, 9, 300, 300)
+                        cartoonImage = cv2.bitwise_and(colorImage, colorImage, mask=getEdge)
+                        
+                        # Détecter les contours de l'image
+                        #edges = cv2.Canny(gray_image, 100, 200)
+                        player = pygame.surfarray.make_surface(cartoonImage)
+                        
+                        pygame.image.save(player, "image.jpg")
                         waiting = False
                         print(mycam.LeftHandUp, mycam.RightHandUp)
                 
