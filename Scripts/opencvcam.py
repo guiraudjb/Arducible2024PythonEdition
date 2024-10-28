@@ -26,10 +26,10 @@ class Cam(pygame.sprite.Sprite):
         self.cap.set(3, self.Largeur)
         self.cap.set(4, self.Hauteur)
         self.LargeurChampCamera = round((self.PourcentageLargeurCamera * self.Largeur)/100)
-        print(self.LargeurChampCamera)
+        #print(self.LargeurChampCamera)
         
         self.HauteurChampCamera = round((self.PourcentageHauteurCamera * self.Hauteur)/100)
-        print(self.HauteurChampCamera)
+        #print(self.HauteurChampCamera)
         self.LimiteGaucheCamera = round((self.Largeur-self.LargeurChampCamera)/2)
         self.LimiteDroiteCamera = round(self.Largeur-(self.Largeur-self.LargeurChampCamera)/2)
         self.LimiteBasseCamera = round((self.Hauteur-self.HauteurChampCamera)/2)
@@ -53,13 +53,20 @@ class Cam(pygame.sprite.Sprite):
                     self.zoneinterdite = False
                 else:
                     self.zoneinterdite = True
+                    
+                    #if DebugCam_string == True:
                     #mp_drawing.draw_landmarks(self.photo, self.results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+                        
                     break
         else:
             self.zoneinterdite = True
         
         #if self.zoneinterdite == False:
-            #mp_drawing.draw_landmarks(self.photo, self.results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+        
+        if DebugCam_string == "True":
+            #print(DebugCam_string)
+            mp_drawing.draw_landmarks(self.photo, self.results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+            
         self.photo = cv2.cvtColor(self.photo, cv2.COLOR_BGR2RGB)
         self.cam = pygame.surfarray.make_surface(self.photo)
         self.cam = pygame.transform.rotate(self.cam, -90)

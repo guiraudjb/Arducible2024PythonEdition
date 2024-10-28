@@ -15,7 +15,9 @@ cam_clock = pygame.time.Clock()
 old_cam_timer = pygame.time.get_ticks()
 cam_timer = pygame.time.get_ticks()
 
-
+channel1 = pygame.mixer.Channel(0)
+channel2 = pygame.mixer.Channel(1)
+channel2.set_volume(0.1)
 
 oldlevel = 0
 level = 1
@@ -23,9 +25,11 @@ cibleencours = 2
 score = 0
 high_score = 0
 gamestate = 0
-
 oldcibleencours = cibleencours
 continuer = True
+current_time = 0
+old_current_time = 0
+affichage = True
 
 
 # parse config.ini and create if not exist
@@ -34,7 +38,7 @@ if not os.path.exists("config.ini"):
     f = open("config.ini", "w")
     # Écrire du texte dans le fichier
     f.write("[TimeSetting]\n")
-    f.write("intro_length = 5\n")
+    f.write("intro_length = 10\n")
     f.write("game_length = 60\n")
     f.write("ending_length = 10\n")
     f.write("\n")
@@ -61,7 +65,7 @@ if not os.path.exists("config.ini"):
     f.write("FPS = 20\n")
     f.write("ShowFps = False\n")
     f.write("DebugCam = False\n")
-    
+    f.write("Credit = 1\n")
     # Fermer le fichier
     f.close()
 
@@ -88,6 +92,7 @@ if os.path.exists("config.ini"):
         FPS = int(config["Debug"]["FPS"])
         ShowFps_string = config["Debug"]["ShowFps"]
         DebugCam_string = config["Debug"]["DebugCam"]
+        credit_left = int(config["Debug"]["Credit"])
         f.close
 
 time_left = intro_length
@@ -108,10 +113,16 @@ else:
     LARGEUR_ECRAN = 1024
     HAUTEUR_ECRAN = 768
 
+STR="résolution " + str(LARGEUR_ECRAN) + " X " + str(HAUTEUR_ECRAN)
+print(STR)
+
 Fontsize = round(HAUTEUR_ECRAN/10)
+Fontsize2 = round(HAUTEUR_ECRAN/20)
 #initialise font text
-FontDel2 = pygame.font.Font("./assets/fonts/NEON GLOW-Hollow.otf",Fontsize)
 FontDel1 = pygame.font.Font("./assets/fonts/NEON GLOW.otf",Fontsize)
+FontDel2 = pygame.font.Font("./assets/fonts/NEON GLOW-Hollow.otf",Fontsize)
+FontDel3 = pygame.font.Font("./assets/fonts/NEON GLOW.otf",Fontsize2)
+FontDel4 = pygame.font.Font("./assets/fonts/NEON GLOW-Hollow.otf",Fontsize2)
 #preset color for neon font
 red = (204, 0, 0)
 redlight = (239, 41, 41)
@@ -162,3 +173,5 @@ else:
     DebugCam = False
 
 waiting = True
+
+

@@ -7,25 +7,22 @@ from Scripts.Sprites import *# load sprites
 import cv2
 #---------------------Procedures et fonctions---------------------------
 
-def init_game():
+def init_cibles():
     global cible1
     global cible2
     global cible3
     cible1 = Cible()
-    #cible1.image = pygame.transform.scale(cible1.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
-    cible1.rect.x = LARGEUR_ECRAN*0.15 - LARGEUR_ECRAN*0.2/2
-    cible1.rect.y = HAUTEUR_ECRAN * 0.82 - HAUTEUR_ECRAN*0.35/2
+    cible1.rect.x = LARGEUR_ECRAN * 0.15 - LARGEUR_ECRAN*0.25/2
+    cible1.rect.y = HAUTEUR_ECRAN * 0.80 - HAUTEUR_ECRAN*0.44/2
 
     cible2 = Cible()
-    #cible2.image = pygame.transform.scale(cible2.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
-    cible2.rect.x = LARGEUR_ECRAN/2 - LARGEUR_ECRAN*0.2/2
-    cible2.rect.y = HAUTEUR_ECRAN * 0.82 - HAUTEUR_ECRAN*0.35/2
+    cible2.rect.x = LARGEUR_ECRAN / 2 - LARGEUR_ECRAN*0.25/2
+    cible2.rect.y = HAUTEUR_ECRAN * 0.80 - HAUTEUR_ECRAN*0.44/2
 
     cible3 = Cible()
     cible3.image = cible3.images[1]
-    #cible3.image = pygame.transform.scale(cible3.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
-    cible3.rect.x = LARGEUR_ECRAN*0.85 - LARGEUR_ECRAN*0.2/2
-    cible3.rect.y = HAUTEUR_ECRAN * 0.82 - HAUTEUR_ECRAN*0.35/2
+    cible3.rect.x = LARGEUR_ECRAN * 0.85 - LARGEUR_ECRAN*0.25/2
+    cible3.rect.y = HAUTEUR_ECRAN * 0.80 - HAUTEUR_ECRAN*0.44/2
     
 def next_gamestate():
     global time_left
@@ -65,7 +62,19 @@ def ciblealeatoire():
     global oldcibleencours
     while cibleencours == oldcibleencours:
         cibleencours = random.randint(1, 3)
-    oldcibleencours = cibleencours 
+    oldcibleencours = cibleencours
+    if sound_effects == True:
+        if cibleencours == 1:
+            pygame.mixer.music.load('./assets/Sounds/VoicesAI/gauche.wav')
+            pygame.mixer.music.play(1)
+
+        if cibleencours == 2:
+            pygame.mixer.music.load('./assets/Sounds/VoicesAI/centre.wav')
+            pygame.mixer.music.play(1)
+
+        if cibleencours == 3:
+            pygame.mixer.music.load('./assets/Sounds/VoicesAI/droite.wav')
+            pygame.mixer.music.play(1)
 
 def showcam():
     ecran.blit(mycam.images, (LARGEUR_ECRAN/2-mycam.width/2,0))
@@ -82,9 +91,11 @@ def countdown():
 def update_score():
     global score
     global time_left
+    global channel2
     if sound_effects == True:
-        pygame.mixer.music.load('./assets/Sounds/Son3.wav')
-        pygame.mixer.music.play(1)
+        sfx = pygame.mixer.Sound('./assets/Sounds/Son3.wav')
+        #channel2 = pygame.mixer.Channel(1)
+        channel2.play(sfx)
     
     score = score + 1
     time_left = time_left + bonus_time
@@ -108,6 +119,49 @@ def draw_camring():
         camring.image = camring.images[1]
         ecran.blit(camring.image, camring.rect)
     
+def draw_text(text,x,y,blink,center,fnt,col):
+
+    if fnt == 1:
+        font1=FontDel1.render
+        font2=FontDel2.render
+    if fnt == 2:
+        font1=FontDel3.render
+        font2=FontDel4.render
+        
+    if col == 1:
+        color1=red
+        color2=redlight
+    if col == 2:
+        color1=orange
+        color2=orangelight
+    if col == 3:
+        color1=yellow
+        color2=yellowlight
+    if col == 4:
+        color1=blue
+        color2=bluelight
+    if col == 5:
+        color1=green
+        color2=greenlight
+    
+    
+    text_img = font1(str(text),True,color1)
+    text_img2 = font2(str(text),True,color2)
+    
+    if blink == True:
+        if affichage == True:
+                    if center == True:
+                        text_img_width, text_img_height = text_img.get_rect().size
+                        text_img2_width, text_img2_height = text_img2.get_rect().size
+                        ecran.blit(text_img,(x-text_img_width/2,y-text_img_height/2))
+                        ecran.blit(text_img2,(x-text_img2_width/2,y-text_img2_height/2))
+
+    else:
+        if center == True:
+            text_img_width, text_img_height = text_img.get_rect().size
+            text_img2_width, text_img2_height = text_img2.get_rect().size
+            ecran.blit(text_img,(x-text_img_width/2,y-text_img_height/2))
+            ecran.blit(text_img2,(x-text_img2_width/2,y-text_img2_height/2))
     
 def debug_lines():
     global ecran
@@ -120,121 +174,63 @@ def debug_lines():
     pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*2/3), (LARGEUR_ECRAN,HAUTEUR_ECRAN*2/3), 1)
 
 def draw_go_to_shooting_zone():
-    getaway_center_image1 = FontDel1.render("Go to the shooting zone", True, redlight)
-    getaway_center_image2 = FontDel2.render("Go to the shooting zone", True, red)
-       
-    getaway_center_image1_width, getaway_center_image1_height = getaway_center_image1.get_rect().size
-    ecran.blit(getaway_center_image1,(LARGEUR_ECRAN/2 - getaway_center_image1_width/2, HAUTEUR_ECRAN*55/100))
-    ecran.blit(getaway_center_image2,(LARGEUR_ECRAN/2 - getaway_center_image1_width/2, HAUTEUR_ECRAN*55/100))
-
+    draw_text("Go to the shooting zone",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*55/100,False,True,1,1)
 
 def draw_intro_text():
+    draw_text("HIGH SCORE",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*1/20,False,True,1,4)
+    draw_text(str(high_score),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*3/20,False,True,1,4)
+    draw_text("GAME START",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*5/20,False,True,1,3)
+    draw_text("IN",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*7/20,False,True,1,3)
+    draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN/2,False,True,1,3)
+    draw_text("CREDIT  : ",17*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
+    draw_text(str(credit_left),19*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
 
-    timeleft_center_image1 = FontDel1.render(str(time_left), True, bluelight)
-    timeleft_center_image2 = FontDel2.render(str(time_left), True, blue)
-       
-    timeleft_center_image1_width, timeleft_center_image1_height = timeleft_center_image1.get_rect().size
-    ecran.blit(timeleft_center_image1,(LARGEUR_ECRAN/2 - timeleft_center_image1_width/2,HAUTEUR_ECRAN/2 - timeleft_center_image1_height/2))
-    ecran.blit(timeleft_center_image2,(LARGEUR_ECRAN/2 - timeleft_center_image1_width/2,HAUTEUR_ECRAN/2 - timeleft_center_image1_height/2))
-    
-    HighScore_image1 = FontDel1.render("HIGH SCORE", True, bluelight)
-    HighScore_image2 = FontDel2.render("HIGH SCORE", True, blue)
-    HighScore_center_image1_width, HighScore_center_image1_height = HighScore_image1.get_rect().size
-    ecran.blit(HighScore_image1,(LARGEUR_ECRAN/2 - HighScore_center_image1_width  / 2,5))
-    ecran.blit(HighScore_image2,(LARGEUR_ECRAN/2 - HighScore_center_image1_width  / 2,5))
-
-    HighScore_image1_text = FontDel1.render(str(high_score), True, bluelight)
-    HighScore_image2_text = FontDel2.render(str(high_score), True, blue)
-    HighScore_center_image1_text_width, HighScore_center_image1_text_height = HighScore_image1_text.get_rect().size
-    ecran.blit(HighScore_image1_text,(LARGEUR_ECRAN/2 - HighScore_center_image1_text_width  / 2,HighScore_center_image1_text_height))
-    ecran.blit(HighScore_image2_text,(LARGEUR_ECRAN/2 - HighScore_center_image1_text_width  / 2,HighScore_center_image1_text_height))
-    
-    info_text1 = FontDel1.render("Haut les mains", True, bluelight)
-    info_text2 = FontDel2.render("Haut les mains", True, blue)
-    info_text_width, info_text_height = info_text1.get_rect().size
-    ecran.blit(info_text1,(LARGEUR_ECRAN/2 - info_text_width  / 2,HAUTEUR_ECRAN*3/4 - info_text_height/2))
-    ecran.blit(info_text2,(LARGEUR_ECRAN/2 - info_text_width  / 2,HAUTEUR_ECRAN*3/4 - info_text_height/2))
-
-    
+def draw_intro_insertCoin():
+    draw_text("HIGH SCORE",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*1/20,False,True,1,4)
+    draw_text(str(high_score),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*3/20,False,True,1,4)
+    draw_text("CREDIT  : ",17*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
+    draw_text(str(credit_left),19*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
 def draw_ingame_text():
-    global ecran
-                    
     if time_left <= 15:
         #red
-        Arcade_center_image1 =FontDel1.render(str(time_left), True, redlight)
-        Arcade_center_image2 =FontDel2.render(str(time_left), True, red)
+        draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*45/100,True,True,1,1)
     elif time_left <= 30:
         #orange
-        Arcade_center_image1 = FontDel1.render(str(time_left), True, orangelight)
-        Arcade_center_image2 = FontDel2.render(str(time_left), True, orange)
+        draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*45/100,False,True,1,2)
     elif time_left <= 45:
         #yellow
-        Arcade_center_image1 = FontDel1.render(str(time_left), True, yellowlight)
-        Arcade_center_image2 = FontDel2.render(str(time_left), True, yellow)
+        draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*45/100,False,True,1,3)
     elif time_left >= 60:
         #green
-        Arcade_center_image1 = FontDel1.render(str(time_left), True, greenlight)
-        Arcade_center_image2 = FontDel2.render(str(time_left), True, green)
+        draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*45/100,False,True,1,5)
     else:
         #green
-        Arcade_center_image1 = FontDel1.render(str(time_left), True, greenlight)
-        Arcade_center_image2 = FontDel2.render(str(time_left), True, green)
+        draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*45/100,False,True,1,5)
        
-    Arcade_center_image1_width, Arcade_center_image1_height = Arcade_center_image1.get_rect().size
-    ecran.blit(Arcade_center_image1,(LARGEUR_ECRAN/2 - Arcade_center_image1_width/2,HAUTEUR_ECRAN/2 - Arcade_center_image1_height/2))
-    ecran.blit(Arcade_center_image2,(LARGEUR_ECRAN/2 - Arcade_center_image1_width/2,HAUTEUR_ECRAN/2 - Arcade_center_image1_height/2))
     
+    draw_text("POINTS",LARGEUR_ECRAN/5,HAUTEUR_ECRAN*1/10,False,True,1,4)
+    draw_text(str(score),LARGEUR_ECRAN/5,HAUTEUR_ECRAN/3,False,True,1,4)
     
-    Score_image1_text = FontDel1.render("POINTS", True, bluelight)
-    Score_image2_text = FontDel2.render("POINTS", True, blue)
-    Score_image1_text_width, Score_image1_text_height = Score_image1_text.get_rect().size
-   
-    ecran.blit(Score_image1_text,(LARGEUR_ECRAN/5 - Score_image1_text_width/2,Score_image1_text_height/2))
-    ecran.blit(Score_image2_text,(LARGEUR_ECRAN/5 - Score_image1_text_width/2,Score_image1_text_height/2))
-    
-    Score_image1 = FontDel1.render(str(score), True, bluelight)
-    Score_image2 = FontDel2.render(str(score), True, blue)
-    Score_image1_width, Score_image1_height = Score_image1.get_rect().size
-   
-    ecran.blit(Score_image1,(LARGEUR_ECRAN/5 - Score_image1_width/2,HAUTEUR_ECRAN/3 - Score_image1_height/2))
-    ecran.blit(Score_image2,(LARGEUR_ECRAN/5 - Score_image1_width/2,HAUTEUR_ECRAN/3 - Score_image1_height/2))
-
-
-
+    #affichage des credits
+    draw_text("CREDIT  : ",17*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
+    draw_text(str(credit_left),19*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
 def draw_ending_text():
-
-    timeleft_center_image1 = FontDel1.render(str(time_left), True, greenlight)
-    timeleft_center_image2 = FontDel2.render(str(time_left), True, green)
-    timeleft_center_image1_width, timeleft_center_image1_height = timeleft_center_image1.get_rect().size
-    ecran.blit(timeleft_center_image1,(LARGEUR_ECRAN/2 - timeleft_center_image1_width/2,HAUTEUR_ECRAN/2 - timeleft_center_image1_height))
-    ecran.blit(timeleft_center_image2,(LARGEUR_ECRAN/2 - timeleft_center_image1_width/2,HAUTEUR_ECRAN/2 - timeleft_center_image1_height))
-        
-    HighScore_image1 = FontDel1.render("HIGH SCORE", True, bluelight)
-    HighScore_image2 = FontDel2.render("HIGH SCORE", True, blue)
-    HighScore_center_image1_width, HighScore_center_image1_height = HighScore_image1.get_rect().size
-    ecran.blit(HighScore_image1,(LARGEUR_ECRAN/2 - HighScore_center_image1_width  / 2,5))
-    ecran.blit(HighScore_image2,(LARGEUR_ECRAN/2 - HighScore_center_image1_width  / 2,5))
-
-    HighScore_image1_text = FontDel1.render(str(high_score), True, redlight)
-    HighScore_image2_text = FontDel2.render(str(high_score), True, red)
-    HighScore_center_image1_text_width, HighScore_center_image1_text_height = HighScore_image1_text.get_rect().size
-    ecran.blit(HighScore_image1_text,(LARGEUR_ECRAN/2 - HighScore_center_image1_text_width  / 2,HighScore_center_image1_text_height))
-    ecran.blit(HighScore_image2_text,(LARGEUR_ECRAN/2 - HighScore_center_image1_text_width  / 2,HighScore_center_image1_text_height))
+    draw_text("HIGH SCORE",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*1/20,False,True,1,4)
+    draw_text(str(high_score),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*3/20,False,True,1,4)
+    draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*1/3,False,True,1,3)
     
+    if score >= high_score:
+        draw_text("YOUR SCORE",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*11/20,True,True,1,5)
+        draw_text(str(score),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*14/20,True,True,1,5)
+        draw_text("New record !!!",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*9/20,True, True,2,5)
+        print("high score")
+    else:
+        draw_text("YOUR SCORE",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*11/20,False,True,1,3)
+        draw_text(str(score),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*14/20,False,True,1,3)
     
-    YourScore_image1_text = FontDel1.render("YOUR SCORE", True, yellowlight)
-    YourScore_image2_text = FontDel2.render("YOUR SCORE", True, yellow)
-    YourScore_center_image1_text_width, YourScore_center_image1_text_height = YourScore_image1_text.get_rect().size
-    ecran.blit(YourScore_image1_text,(LARGEUR_ECRAN/2 - YourScore_center_image1_text_width  / 2,HAUTEUR_ECRAN/2))
-    ecran.blit(YourScore_image2_text,(LARGEUR_ECRAN/2 - YourScore_center_image1_text_width  / 2,HAUTEUR_ECRAN/2))
-    
-    YourScore_image1 = FontDel1.render(str(score), True, yellowlight)
-    YourScore_image2 = FontDel2.render(str(score), True, yellow)
-    YourScore_center_image1_width, YourScore_center_image1_height = YourScore_image1.get_rect().size
-    ecran.blit(YourScore_image1,(LARGEUR_ECRAN/2 - YourScore_center_image1_width  / 2,HAUTEUR_ECRAN*2/3))
-    ecran.blit(YourScore_image2,(LARGEUR_ECRAN/2 - YourScore_center_image1_width  / 2,HAUTEUR_ECRAN*2/3))
-
-
+    #affichage des credits
+    draw_text("CREDIT  : ",17*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
+    draw_text(str(credit_left),19*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
 def draw_cibles():
     global ecran
     global cible1
@@ -259,32 +255,22 @@ def draw_cibles():
         cible3.image = cible1.images[1]
         
     
-    #cible1.image = pygame.transform.scale(cible1.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
-    #cible2.image = pygame.transform.scale(cible2.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
-    #cible3.image = pygame.transform.scale(cible3.image, (LARGEUR_ECRAN*0.2, HAUTEUR_ECRAN*0.35))
+    #cible1.image = pygame.transform.scale(cible1.image, (LARGEUR_ECRAN*0.3, HAUTEUR_ECRAN*0.35))
+    #cible2.image = pygame.transform.scale(cible2.image, (LARGEUR_ECRAN*0.3, HAUTEUR_ECRAN*0.35))
+    #cible3.image = pygame.transform.scale(cible3.image, (LARGEUR_ECRAN*0.3, HAUTEUR_ECRAN*0.35))
     ecran.blit(cible1.image, cible1.rect)
     ecran.blit(cible2.image, cible2.rect)
     ecran.blit(cible3.image, cible3.rect)
-
-def cartoonize_player():
-    global player
-    array = pygame.surfarray.pixels3d(player)
-    #Convertir l'image en nuances de gris
-    gray_image = cv2.cvtColor(array, cv2.COLOR_BGR2GRAY)
-    smoothGrayScale = cv2.medianBlur(gray_image, 5)
-    getEdge = cv2.adaptiveThreshold(smoothGrayScale, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 9, 9)
-    colorImage = cv2.bilateralFilter(array, 9, 300, 300)
-    cartoonImage = cv2.bitwise_and(colorImage, colorImage, mask=getEdge)
-    # Détecter les contours de l'image
-    edges = cv2.Canny(gray_image, 100, 200)
-    player = pygame.surfarray.make_surface(cartoonImage)
-
-
 #-------------------------DEBUT DU Programme ---------------------------
 #initialise background table
+print("loading sprites")
 introbackground = BackgroudFrame()
 ingamebackground = Background()
 ingamebackground.image = pygame.transform.scale(ingamebackground.image, (LARGEUR_ECRAN, HAUTEUR_ECRAN))
+Animation1 =  AnimationFrame1()
+Animation2 =  AnimationFrame2()
+Animation3 =  AnimationFrame3()
+Animation4 =  AnimationFrame4()
 camring = ColoredRing()
 camring_width, camring_height = camring.image.get_rect().size
 camring.rect.x = LARGEUR_ECRAN/2 - camring_width/2
@@ -293,6 +279,7 @@ camring.rect.x = LARGEUR_ECRAN/2 - camring_width/2
 if active_webcam:
     try:
         from Scripts.opencvcam import Cam
+        print("activating webcam")
         mycam = Cam()
         mycam.update(mycam.cap, mycam.mp_drawing,mycam.mp_pose, mycam.LimiteBasseCamera, mycam.LimiteHauteCamera, mycam.LimiteGaucheCamera, mycam.LimiteDroiteCamera)
         
@@ -334,31 +321,47 @@ else:
 #initialise the screen
 
 # run the background game music
+
 if background_music == True:
-    music = pygame.mixer.Sound('./assets/Sounds/Neon City.mp3')
-    channel1 = pygame.mixer.Channel(0)
+    print("Turn on music")
+    music = pygame.mixer.Sound('./assets/Sounds/Arducible vibe.mp3')
+    
     channel1.play(music, loops = -1)
     
     
 
 
-init_game()
+init_cibles()
 
 
 #---------------------------main game loop------------------------------
 
 while continuer:
+    #global timer pour le blinking text
+    current_time=pygame.time.get_ticks()
+    if current_time - old_current_time > 500:
+        old_current_time=current_time
+        if affichage == True:
+            affichage=False
+        else:
+            affichage=True
+                    
     #-----------------------begining scene------------------------------
     if gamestate == 0:
-        countdown()
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 continuer = False
+                print("exit game")
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     continuer = False
+                    print("exit game")
+           
             elif event.type == pygame.KEYUP:
                 #press m key to mute/unmute only backgroud music
+                if event.key == pygame.K_i:
+                        credit_left = credit_left + 1
                 if event.key == pygame.K_m:
                         if channel1.get_busy():
                             channel1.fadeout(FadeoutTime)
@@ -379,9 +382,12 @@ while continuer:
                         
         
         introbackground.update()
+        
         ecran.blit(introbackground.image, introbackground.rect)
+        
 
-        draw_intro_text()
+
+        
         if debug_line == True:
             debug_lines()
         
@@ -391,22 +397,45 @@ while continuer:
             FPS2 = FontDel2.render(fps, True, bluelight)
             ecran.blit(FPS1,(0,0))
             ecran.blit(FPS2,(0,0))
-        while waiting:    
-            if webcam_compatibility == True:
-                mycam.updateintro(mycam.cap, mycam.mp_drawing,mycam.mp_pose)
-                showcam()
-                pygame.display.flip()
-                if mycam.results.pose_landmarks:
-                    if mycam.LeftHandUp == True and mycam.RightHandUp == True :
-                        player = mycam.images
-                        cartoonize_player()
-                        pygame.image.save(player, "image.jpg")
-                        waiting = False
-                        print(mycam.LeftHandUp, mycam.RightHandUp)
+
+        if credit_left < 1:
+            #print("insert Coin")
+            draw_text("insert coin",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*3/4, True,True,1,3)
+            draw_intro_insertCoin()
+            Animation1.update()
+            ecran.blit(Animation1.image, (LARGEUR_ECRAN*1/5-Animation1.res_img_width/2, HAUTEUR_ECRAN*45/100-Animation1.res_img_height/2 ))
+            Animation2.update()
+            ecran.blit(Animation2.image, (LARGEUR_ECRAN*2/5-Animation2.res_img_width/2, HAUTEUR_ECRAN*45/100-Animation2.res_img_height/2 ))
+            Animation3.update()
+            ecran.blit(Animation3.image, (LARGEUR_ECRAN*3/5-Animation3.res_img_width/2, HAUTEUR_ECRAN*45/100-Animation3.res_img_height/2 ))
+            Animation4.update()
+            ecran.blit(Animation4.image, (LARGEUR_ECRAN*4/5-Animation4.res_img_width/2, HAUTEUR_ECRAN*45/100-Animation4.res_img_height/2 ))
+        else:
+            channel1.fadeout(9000)
+            countdown()
+            draw_intro_text()
+            if time_left <= 0:
+                credit_left = credit_left-1
+                if background_music == True:
+                    music = pygame.mixer.Sound('./assets/Sounds/Boules Under the Sun.mp3')
+                    channel1.play(music, loops = -1)
+                   
+                next_gamestate()
+
+        #    if webcam_compatibility == True:
+        #        mycam.updateintro(mycam.cap, mycam.mp_drawing,mycam.mp_pose)
+        #        showcam()
+        #        pygame.display.flip()
+        #        if mycam.results.pose_landmarks:
+        #            if mycam.LeftHandUp == True and mycam.RightHandUp == True :
+        #                player = mycam.images
+        #                cartoonize_player()
+        #                pygame.image.save(player, "image.jpg")
+            #waiting = False
+        #                print(mycam.LeftHandUp, mycam.RightHandUp)
                 
 
-        if time_left <= 0:
-            next_gamestate()
+
 
         pygame.display.flip()
 
@@ -422,8 +451,8 @@ while continuer:
             webcam_zone_interdite = mycam.zoneinterdite
             ecran.blit(ingamebackground.image, ingamebackground.rect)
             #ecran.blit(ingamebackground.image, ingamebackground.rect)
-            if DebugCam == True:
-               showcam()
+            #if DebugCam == True:
+            #   showcam()
             
             draw_camring()
         else:
@@ -436,23 +465,25 @@ while continuer:
             if event.type == pygame.QUIT:
                 
                 continuer = False
+                print("exit game")
             
             elif event.type == pygame.KEYDOWN:
                 
                 if event.key == pygame.K_ESCAPE:
                     continuer = False
-                
-          
+                    print("exit game")
+
             elif event.type == pygame.KEYUP:
                 
                 if webcam_zone_interdite == False:
                     
+                    if event.key == pygame.K_i:
+                        credit_left = credit_left + 1
                     if event.key == pygame.K_e:
                         
                         if cibleencours == 1:
                             update_score()
                             ciblealeatoire()
-                    
                     if event.key == pygame.K_r:
                         
                         if cibleencours == 2:
@@ -499,6 +530,10 @@ while continuer:
         pygame.display.flip()
         
         if time_left <= 0:
+            if background_music == True:
+                music = pygame.mixer.Sound('./assets/Sounds/Arducible vibe.mp3')
+                channel1.play(music, loops = -1)
+    
             next_gamestate()
 
         #clock.tick(60)
@@ -512,13 +547,19 @@ while continuer:
             if event.type == pygame.QUIT:
             
                 continuer = False
+                print("exit game")
             
             elif event.type == pygame.KEYDOWN:
             
                 if event.key == pygame.K_ESCAPE:
             
                     continuer = False
+                    print("exit game")
+            
+                    
             elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_i:
+                        credit_left = credit_left + 1
                 if event.key == pygame.K_m:
                         if channel1.get_busy():
                             channel1.fadeout(FadeoutTime)
@@ -553,7 +594,7 @@ while continuer:
             FPS2 = FontDel2.render(fps, True, bluelight)
             ecran.blit(FPS1,(200,0))
             ecran.blit(FPS2,(200,0))
-            ecran.blit(player, (0,0))
+            #ecran.blit(player, (0,0))
         
         pygame.display.flip()
         
