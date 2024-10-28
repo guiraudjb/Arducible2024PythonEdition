@@ -179,9 +179,9 @@ def draw_go_to_shooting_zone():
 def draw_intro_text():
     draw_text("HIGH SCORE",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*1/20,False,True,1,4)
     draw_text(str(high_score),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*3/20,False,True,1,4)
-    draw_text("GAME START",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*5/20,False,True,1,3)
-    draw_text("IN",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*7/20,False,True,1,3)
-    draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN/2,False,True,1,3)
+    draw_text("GAME START",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*5/20,False,True,1,5)
+    draw_text("IN",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*7/20,False,True,1,5)
+    draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN/2,False,True,1,5)
     draw_text("CREDIT  : ",17*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
     draw_text(str(credit_left),19*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
 
@@ -264,6 +264,7 @@ def draw_cibles():
 #-------------------------DEBUT DU Programme ---------------------------
 #initialise background table
 print("loading sprites")
+logo = ArducibleLogo()
 introbackground = BackgroudFrame()
 ingamebackground = Background()
 ingamebackground.image = pygame.transform.scale(ingamebackground.image, (LARGEUR_ECRAN, HAUTEUR_ECRAN))
@@ -335,7 +336,16 @@ init_cibles()
 
 
 #---------------------------main game loop------------------------------
-
+white = [255, 255, 255]
+ecran.fill(white)
+logo_width, logo_height = logo.image.get_rect().size
+while time_left >= 0:
+    countdown()
+    print (time_left)
+    ecran.blit(logo.image,(LARGEUR_ECRAN/2-logo_width/2,HAUTEUR_ECRAN/2-logo_height/2))
+    draw_text("ARDUCIBLE PETANQUE GAME",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*1/4,True,True,1,5)
+    pygame.display.flip()
+time_left = intro_length
 while continuer:
     #global timer pour le blinking text
     current_time=pygame.time.get_ticks()
@@ -410,6 +420,7 @@ while continuer:
             ecran.blit(Animation3.image, (LARGEUR_ECRAN*3/5-Animation3.res_img_width/2, HAUTEUR_ECRAN*45/100-Animation3.res_img_height/2 ))
             Animation4.update()
             ecran.blit(Animation4.image, (LARGEUR_ECRAN*4/5-Animation4.res_img_width/2, HAUTEUR_ECRAN*45/100-Animation4.res_img_height/2 ))
+           
         else:
             channel1.fadeout(9000)
             countdown()

@@ -2,6 +2,14 @@ import pygame
 from pygame import *
 from Scripts.init import *
 
+class ArducibleLogo(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('./assets/Images/Arducible.png')
+        self.img_width, self.img_height = self.image.get_rect().size
+        self.image = pygame.transform.scale(self.image, (self.img_width*LARGEUR_ECRAN/1920,self.img_height*HAUTEUR_ECRAN/1080))
+
+        
 class Cible(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
