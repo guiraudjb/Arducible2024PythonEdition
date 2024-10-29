@@ -12,18 +12,19 @@ def init_cibles():
     global cible2
     global cible3
     cible1 = Cible()
-    cible1.rect.x = LARGEUR_ECRAN * 0.15 - LARGEUR_ECRAN*0.25/2
-    cible1.rect.y = HAUTEUR_ECRAN * 0.80 - HAUTEUR_ECRAN*0.44/2
+    cible1.rect.x = LARGEUR_ECRAN * 3/20 - LARGEUR_ECRAN*0.25/2
+    cible1.rect.y = HAUTEUR_ECRAN * 16/20 - HAUTEUR_ECRAN*0.44/2
 
     cible2 = Cible()
-    cible2.rect.x = LARGEUR_ECRAN / 2 - LARGEUR_ECRAN*0.25/2
-    cible2.rect.y = HAUTEUR_ECRAN * 0.80 - HAUTEUR_ECRAN*0.44/2
+    cible2.rect.x = LARGEUR_ECRAN *10/20 - LARGEUR_ECRAN*0.25/2
+    cible2.rect.y = HAUTEUR_ECRAN * 16/20 - HAUTEUR_ECRAN*0.44/2
 
     cible3 = Cible()
     cible3.image = cible3.images[1]
-    cible3.rect.x = LARGEUR_ECRAN * 0.85 - LARGEUR_ECRAN*0.25/2
-    cible3.rect.y = HAUTEUR_ECRAN * 0.80 - HAUTEUR_ECRAN*0.44/2
+    cible3.rect.x = LARGEUR_ECRAN * 17/20 - LARGEUR_ECRAN*0.25/2
+    cible3.rect.y = HAUTEUR_ECRAN * 16/20 - HAUTEUR_ECRAN*0.44/2
     
+
 def next_gamestate():
     global time_left
     global gamestate
@@ -164,73 +165,106 @@ def draw_text(text,x,y,blink,center,fnt,col):
             ecran.blit(text_img2,(x-text_img2_width/2,y-text_img2_height/2))
     
 def debug_lines():
-    global ecran
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN/2,0), (960,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (480,0), (480,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (1440,0), (1440,HAUTEUR_ECRAN), 1)
+    #Lignes verticales
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*1/20,0), (LARGEUR_ECRAN*1/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*2/20,0), (LARGEUR_ECRAN*2/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*3/20,0), (LARGEUR_ECRAN*3/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*4/20,0), (LARGEUR_ECRAN*4/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*5/20,0), (LARGEUR_ECRAN*5/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*6/20,0), (LARGEUR_ECRAN*6/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*7/20,0), (LARGEUR_ECRAN*7/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*8/20,0), (LARGEUR_ECRAN*8/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*9/20,0), (LARGEUR_ECRAN*9/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*10/20,0), (LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*11/20,0), (LARGEUR_ECRAN*11/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*12/20,0), (LARGEUR_ECRAN*12/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*13/20,0), (LARGEUR_ECRAN*13/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*14/20,0), (LARGEUR_ECRAN*14/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*15/20,0), (LARGEUR_ECRAN*15/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*16/20,0), (LARGEUR_ECRAN*16/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*17/20,0), (LARGEUR_ECRAN*17/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*18/20,0), (LARGEUR_ECRAN*18/20,HAUTEUR_ECRAN), 1)
+    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*19/20,0), (LARGEUR_ECRAN*19/20,HAUTEUR_ECRAN), 1)
+    #lignes horizontales
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*1/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*1/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*2/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*2/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*3/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*3/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*4/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*4/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*5/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*5/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*6/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*6/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*7/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*7/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*8/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*8/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*9/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*9/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*10/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*10/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*11/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*11/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*12/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*12/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*13/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*13/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*14/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*14/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*15/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*15/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*16/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*16/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*17/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*17/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*18/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*18/20), 1)
+    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*19/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*19/20), 1)
     
-    pygame.draw.line(ecran, red, (0,360), (LARGEUR_ECRAN,360), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN/2), (LARGEUR_ECRAN,HAUTEUR_ECRAN/2), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*2/3), (LARGEUR_ECRAN,HAUTEUR_ECRAN*2/3), 1)
 
 def draw_go_to_shooting_zone():
-    draw_text("Go to the shooting zone",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*55/100,False,True,1,1)
+    draw_text("Go to the shooting zone",LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*11/20,False,True,1,1)
 
 def draw_intro_text():
-    draw_text("HIGH SCORE",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*1/20,False,True,1,4)
-    draw_text(str(high_score),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*3/20,False,True,1,4)
-    draw_text("GAME START",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*5/20,False,True,1,5)
-    draw_text("IN",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*7/20,False,True,1,5)
-    draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN/2,False,True,1,5)
-    draw_text("CREDIT  : ",17*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
-    draw_text(str(credit_left),19*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
+    draw_text("HIGH SCORE",LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*1/20,False,True,1,4)
+    draw_text(str(high_score),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*3/20,False,True,1,4)
+    draw_text("GAME START",LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*6/20,False,True,1,5)
+    draw_text("IN",LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*8/20,False,True,1,5)
+    draw_text(str(time_left),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*10/20,False,True,1,5)
+    draw_text("CREDIT  : ",LARGEUR_ECRAN*17/20,HAUTEUR_ECRAN*19/20,False,True,2,3)
+    draw_text(str(credit_left),LARGEUR_ECRAN*19/20,HAUTEUR_ECRAN*19/20,False,True,2,3)
 
 def draw_intro_insertCoin():
-    draw_text("HIGH SCORE",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*1/20,False,True,1,4)
-    draw_text(str(high_score),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*3/20,False,True,1,4)
-    draw_text("CREDIT  : ",17*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
-    draw_text(str(credit_left),19*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
+    draw_text("HIGH SCORE",LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*1/20,False,True,1,4)
+    draw_text(str(high_score),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*3/20,False,True,1,4)
+    draw_text("CREDIT  : ",LARGEUR_ECRAN*17/20,HAUTEUR_ECRAN*19/20,False,True,2,3)
+    draw_text(str(credit_left),LARGEUR_ECRAN*19/20,HAUTEUR_ECRAN*19/20,False,True,2,3)
 def draw_ingame_text():
     if time_left <= 15:
         #red
-        draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*45/100,True,True,1,1)
+        draw_text(str(time_left),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*9/20,True,True,1,1)
     elif time_left <= 30:
         #orange
-        draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*45/100,False,True,1,2)
+        draw_text(str(time_left),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*9/20,False,True,1,2)
     elif time_left <= 45:
         #yellow
-        draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*45/100,False,True,1,3)
+        draw_text(str(time_left),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*9/20,False,True,1,3)
     elif time_left >= 60:
         #green
-        draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*45/100,False,True,1,5)
+        draw_text(str(time_left),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*9/20,False,True,1,5)
     else:
         #green
-        draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*45/100,False,True,1,5)
+        draw_text(str(time_left),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*9/20,False,True,1,5)
        
     
-    draw_text("POINTS",LARGEUR_ECRAN/5,HAUTEUR_ECRAN*1/10,False,True,1,4)
-    draw_text(str(score),LARGEUR_ECRAN/5,HAUTEUR_ECRAN/3,False,True,1,4)
+    draw_text("POINTS",LARGEUR_ECRAN*4/20,HAUTEUR_ECRAN*1/20,False,True,1,4)
+    draw_text(str(score),LARGEUR_ECRAN*4/20,HAUTEUR_ECRAN*3/20,False,True,1,4)
     
     #affichage des credits
-    draw_text("CREDIT  : ",17*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
-    draw_text(str(credit_left),19*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
+    draw_text("CREDIT  : ",LARGEUR_ECRAN*17/20,HAUTEUR_ECRAN*19/20,False,True,2,3)
+    draw_text(str(credit_left),LARGEUR_ECRAN*19/20,HAUTEUR_ECRAN*19/20,False,True,2,3)
 def draw_ending_text():
-    draw_text("HIGH SCORE",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*1/20,False,True,1,4)
-    draw_text(str(high_score),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*3/20,False,True,1,4)
-    draw_text(str(time_left),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*1/3,False,True,1,3)
+    draw_text("HIGH SCORE",LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*1/20,False,True,1,4)
+    draw_text(str(high_score),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*3/20,False,True,1,4)
+    draw_text(str(time_left),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*1/3,False,True,1,3)
     
     if score >= high_score:
-        draw_text("YOUR SCORE",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*11/20,True,True,1,5)
-        draw_text(str(score),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*14/20,True,True,1,5)
-        draw_text("New record !!!",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*9/20,True, True,2,5)
+        draw_text("YOUR SCORE",LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*11/20,True,True,1,5)
+        draw_text(str(score),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*13/20,True,True,1,5)
+        draw_text("New record !!!",LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*9/20,True, True,2,5)
         print("high score")
     else:
-        draw_text("YOUR SCORE",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*11/20,False,True,1,3)
-        draw_text(str(score),LARGEUR_ECRAN/2,HAUTEUR_ECRAN*14/20,False,True,1,3)
+        draw_text("YOUR SCORE",LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*11/20,False,True,1,3)
+        draw_text(str(score),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*13/20,False,True,1,3)
     
     #affichage des credits
-    draw_text("CREDIT  : ",17*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
-    draw_text(str(credit_left),19*LARGEUR_ECRAN/20,HAUTEUR_ECRAN*95/100,False,True,2,3)
+    draw_text("CREDIT  : ",LARGEUR_ECRAN*17/20,HAUTEUR_ECRAN*19/20,False,True,2,3)
+    draw_text(str(credit_left),LARGEUR_ECRAN*19/20,HAUTEUR_ECRAN*19/20,False,True,2,3)
 def draw_cibles():
     global ecran
     global cible1
@@ -254,13 +288,38 @@ def draw_cibles():
         cible2.image = cible1.images[0]
         cible3.image = cible1.images[1]
         
-    
-    #cible1.image = pygame.transform.scale(cible1.image, (LARGEUR_ECRAN*0.3, HAUTEUR_ECRAN*0.35))
-    #cible2.image = pygame.transform.scale(cible2.image, (LARGEUR_ECRAN*0.3, HAUTEUR_ECRAN*0.35))
-    #cible3.image = pygame.transform.scale(cible3.image, (LARGEUR_ECRAN*0.3, HAUTEUR_ECRAN*0.35))
     ecran.blit(cible1.image, cible1.rect)
     ecran.blit(cible2.image, cible2.rect)
     ecran.blit(cible3.image, cible3.rect)
+    
+def animate_cible():
+    global oldcibleencours
+    if oldcibleencours == 1:
+        cible1.image = cible1.images[2]
+    if oldcibleencours == 2:
+        cible2.image = cible2.images[2]
+    if oldcibleencours == 3:
+        cible3.image = cible3.images[2]
+    for i in range(3):
+        ecran.blit(cible1.image, cible1.rect)
+        ecran.blit(cible2.image, cible2.rect)
+        ecran.blit(cible3.image, cible3.rect)
+        ingamedraw()
+        clock.tick(9)
+    
+
+def ingamedraw():
+    draw_ingame_text()
+    if debug_line == True:
+        debug_lines()
+    if ShowFPS == True:
+        fps = str(int(clock.get_fps()))
+        FPS1 = FontDel1.render(fps, True, blue)
+        FPS2 = FontDel2.render(fps, True, bluelight)
+        ecran.blit(FPS1,(0,0))
+        ecran.blit(FPS2,(0,0))
+    pygame.display.flip()
+
 #-------------------------DEBUT DU Programme ---------------------------
 #initialise background table
 print("loading sprites")
@@ -320,7 +379,23 @@ else:
 
 
 #initialise the screen
+white = [255, 255, 255]
+ecran.fill(white)
+time_left = 7
+if background_music == True:
+    music = pygame.mixer.Sound('./assets/Sounds/intro.wav')
+    channel1.play(music)
 
+while time_left >= 0:
+    
+    
+    countdown()
+    logo_width, logo_height = logo.image.get_rect().size
+    logo.image = pygame.transform.scale(logo.image, (logo.img_width*LARGEUR_ECRAN/1920,logo.img_height*HAUTEUR_ECRAN/1080))
+    ecran.blit(logo.image,(LARGEUR_ECRAN/2-logo_width/2,HAUTEUR_ECRAN/2-logo_height/2))
+    #draw_text("ARDUCIBLE PETANQUE GAME",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*1/4,True,True,1,5)
+    pygame.display.flip()
+time_left = intro_length
 # run the background game music
 
 if background_music == True:
@@ -336,16 +411,7 @@ init_cibles()
 
 
 #---------------------------main game loop------------------------------
-white = [255, 255, 255]
-ecran.fill(white)
-logo_width, logo_height = logo.image.get_rect().size
-while time_left >= 0:
-    countdown()
-    print (time_left)
-    ecran.blit(logo.image,(LARGEUR_ECRAN/2-logo_width/2,HAUTEUR_ECRAN/2-logo_height/2))
-    draw_text("ARDUCIBLE PETANQUE GAME",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*1/4,True,True,1,5)
-    pygame.display.flip()
-time_left = intro_length
+
 while continuer:
     #global timer pour le blinking text
     current_time=pygame.time.get_ticks()
@@ -413,13 +479,13 @@ while continuer:
             draw_text("insert coin",LARGEUR_ECRAN/2,HAUTEUR_ECRAN*3/4, True,True,1,3)
             draw_intro_insertCoin()
             Animation1.update()
-            ecran.blit(Animation1.image, (LARGEUR_ECRAN*1/5-Animation1.res_img_width/2, HAUTEUR_ECRAN*45/100-Animation1.res_img_height/2 ))
+            ecran.blit(Animation1.image, (LARGEUR_ECRAN*4/20-Animation1.res_img_width/2, HAUTEUR_ECRAN*9/20-Animation1.res_img_height/2 ))
             Animation2.update()
-            ecran.blit(Animation2.image, (LARGEUR_ECRAN*2/5-Animation2.res_img_width/2, HAUTEUR_ECRAN*45/100-Animation2.res_img_height/2 ))
+            ecran.blit(Animation2.image, (LARGEUR_ECRAN*8/20-Animation2.res_img_width/2, HAUTEUR_ECRAN*9/20-Animation2.res_img_height/2 ))
             Animation3.update()
-            ecran.blit(Animation3.image, (LARGEUR_ECRAN*3/5-Animation3.res_img_width/2, HAUTEUR_ECRAN*45/100-Animation3.res_img_height/2 ))
+            ecran.blit(Animation3.image, (LARGEUR_ECRAN*12/20-Animation3.res_img_width/2, HAUTEUR_ECRAN*9/20-Animation3.res_img_height/2 ))
             Animation4.update()
-            ecran.blit(Animation4.image, (LARGEUR_ECRAN*4/5-Animation4.res_img_width/2, HAUTEUR_ECRAN*45/100-Animation4.res_img_height/2 ))
+            ecran.blit(Animation4.image, (LARGEUR_ECRAN*16/20-Animation4.res_img_width/2, HAUTEUR_ECRAN*9/20-Animation4.res_img_height/2 ))
            
         else:
             channel1.fadeout(9000)
@@ -493,17 +559,20 @@ while continuer:
                     if event.key == pygame.K_e:
                         
                         if cibleencours == 1:
+                            animate_cible()
                             update_score()
                             ciblealeatoire()
                     if event.key == pygame.K_r:
                         
                         if cibleencours == 2:
+                            animate_cible()
                             update_score()
                             ciblealeatoire() 
                     
                     if event.key == pygame.K_t:
                         
                         if cibleencours == 3:
+                            animate_cible()
                             update_score()
                             ciblealeatoire()
                     
@@ -524,21 +593,9 @@ while continuer:
                             channel1.play(music, loops = -1)
 
 
-        draw_cibles()
-                
-        draw_ingame_text()
-        
-        
-        if debug_line == True:
-            debug_lines()
-        if ShowFPS == True:
-            fps = str(int(clock.get_fps()))
-            FPS1 = FontDel1.render(fps, True, blue)
-            FPS2 = FontDel2.render(fps, True, bluelight)
-            ecran.blit(FPS1,(0,0))
-            ecran.blit(FPS2,(0,0))
 
-        pygame.display.flip()
+        draw_cibles()
+        ingamedraw()
         
         if time_left <= 0:
             if background_music == True:
