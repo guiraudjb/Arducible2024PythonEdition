@@ -1,4 +1,6 @@
 #---------------------------------IMPORTS-------------------------------
+import os
+os.environ['GLOG_minloglevel'] = '2'  # supprime les logs verbeux de MediaPipe/TFLite
 import pygame
 from pygame import *
 pygame.init()
@@ -20,7 +22,6 @@ def init_cibles():
     cible2.rect.y = HAUTEUR_ECRAN * 16/20 - HAUTEUR_ECRAN*0.44/2
 
     cible3 = Cible()
-    cible3.image = cible3.images[1]
     cible3.rect.x = LARGEUR_ECRAN * 17/20 - LARGEUR_ECRAN*0.25/2
     cible3.rect.y = HAUTEUR_ECRAN * 16/20 - HAUTEUR_ECRAN*0.44/2
     
@@ -34,7 +35,6 @@ def next_gamestate():
     global ending_length
     global ingamebackground
     global webcam_compatibility
-    global waiting
     if gamestate == 0:
         gamestate = 1
         if webcam_compatibility == True:
@@ -56,7 +56,6 @@ def next_gamestate():
     elif gamestate == 2:
         gamestate = 0
         time_left = intro_length
-        waiting = True
         
 def ciblealeatoire():
     global cibleencours
@@ -94,19 +93,10 @@ def update_score():
     global time_left
     global channel2
     if sound_effects == True:
-        sfx = pygame.mixer.Sound('./assets/Sounds/Son3.wav')
-        #channel2 = pygame.mixer.Channel(1)
-        channel2.play(sfx)
-    
+        channel2.play(sfx_hit)
+
     score = score + 1
     time_left = time_left + bonus_time
-
-def draw_ellipse_angle(surface, color, rect, angle, width=0):
-    target_rect = pygame.Rect(rect)
-    shape_surf = pygame.Surface(target_rect.size, pygame.SRCALPHA)
-    pygame.draw.ellipse(shape_surf, color, (0, 0, *target_rect.size), width)
-    rotated_surf = pygame.transform.rotate(shape_surf, angle)
-    surface.blit(rotated_surf, rotated_surf.get_rect(center = target_rect.center))
 
 def draw_camring():
     global ecran
@@ -149,62 +139,22 @@ def draw_text(text,x,y,blink,center,fnt,col):
     text_img = font1(str(text),True,color1)
     text_img2 = font2(str(text),True,color2)
     
-    if blink == True:
-        if affichage == True:
-                    if center == True:
-                        text_img_width, text_img_height = text_img.get_rect().size
-                        text_img2_width, text_img2_height = text_img2.get_rect().size
-                        ecran.blit(text_img,(x-text_img_width/2,y-text_img_height/2))
-                        ecran.blit(text_img2,(x-text_img2_width/2,y-text_img2_height/2))
+    if blink and not affichage:
+        return
 
+    w1, h1 = text_img.get_rect().size
+    w2, h2 = text_img2.get_rect().size
+    if center:
+        ecran.blit(text_img,  (x - w1/2, y - h1/2))
+        ecran.blit(text_img2, (x - w2/2, y - h2/2))
     else:
-        if center == True:
-            text_img_width, text_img_height = text_img.get_rect().size
-            text_img2_width, text_img2_height = text_img2.get_rect().size
-            ecran.blit(text_img,(x-text_img_width/2,y-text_img_height/2))
-            ecran.blit(text_img2,(x-text_img2_width/2,y-text_img2_height/2))
+        ecran.blit(text_img,  (x, y))
+        ecran.blit(text_img2, (x, y))
     
 def debug_lines():
-    #Lignes verticales
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*1/20,0), (LARGEUR_ECRAN*1/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*2/20,0), (LARGEUR_ECRAN*2/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*3/20,0), (LARGEUR_ECRAN*3/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*4/20,0), (LARGEUR_ECRAN*4/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*5/20,0), (LARGEUR_ECRAN*5/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*6/20,0), (LARGEUR_ECRAN*6/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*7/20,0), (LARGEUR_ECRAN*7/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*8/20,0), (LARGEUR_ECRAN*8/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*9/20,0), (LARGEUR_ECRAN*9/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*10/20,0), (LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*11/20,0), (LARGEUR_ECRAN*11/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*12/20,0), (LARGEUR_ECRAN*12/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*13/20,0), (LARGEUR_ECRAN*13/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*14/20,0), (LARGEUR_ECRAN*14/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*15/20,0), (LARGEUR_ECRAN*15/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*16/20,0), (LARGEUR_ECRAN*16/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*17/20,0), (LARGEUR_ECRAN*17/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*18/20,0), (LARGEUR_ECRAN*18/20,HAUTEUR_ECRAN), 1)
-    pygame.draw.line(ecran, red, (LARGEUR_ECRAN*19/20,0), (LARGEUR_ECRAN*19/20,HAUTEUR_ECRAN), 1)
-    #lignes horizontales
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*1/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*1/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*2/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*2/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*3/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*3/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*4/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*4/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*5/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*5/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*6/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*6/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*7/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*7/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*8/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*8/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*9/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*9/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*10/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*10/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*11/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*11/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*12/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*12/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*13/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*13/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*14/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*14/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*15/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*15/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*16/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*16/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*17/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*17/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*18/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*18/20), 1)
-    pygame.draw.line(ecran, red, (0,HAUTEUR_ECRAN*19/20), (LARGEUR_ECRAN,HAUTEUR_ECRAN*19/20), 1)
+    for i in range(1, 20):
+        pygame.draw.line(ecran, red, (LARGEUR_ECRAN*i/20, 0), (LARGEUR_ECRAN*i/20, HAUTEUR_ECRAN), 1)
+        pygame.draw.line(ecran, red, (0, HAUTEUR_ECRAN*i/20), (LARGEUR_ECRAN, HAUTEUR_ECRAN*i/20), 1)
     
 
 def draw_go_to_shooting_zone():
@@ -234,9 +184,6 @@ def draw_ingame_text():
     elif time_left <= 45:
         #yellow
         draw_text(str(time_left),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*9/20,False,True,1,3)
-    elif time_left >= 60:
-        #green
-        draw_text(str(time_left),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*9/20,False,True,1,5)
     else:
         #green
         draw_text(str(time_left),LARGEUR_ECRAN*10/20,HAUTEUR_ECRAN*9/20,False,True,1,5)
@@ -324,16 +271,19 @@ def ingamedraw():
 #initialise background table
 print("loading sprites")
 logo = ArducibleLogo()
-introbackground = BackgroudFrame()
+introbackground = BackgroundFrame()
 ingamebackground = Background()
 ingamebackground.image = pygame.transform.scale(ingamebackground.image, (LARGEUR_ECRAN, HAUTEUR_ECRAN))
 Animation1 =  AnimationFrame1()
 Animation2 =  AnimationFrame2()
 Animation3 =  AnimationFrame3()
 Animation4 =  AnimationFrame4()
+anim1 = Anim1()
+anim1_flipped = Anim1Flipped()
 camring = ColoredRing()
 camring_width, camring_height = camring.image.get_rect().size
 camring.rect.x = LARGEUR_ECRAN/2 - camring_width/2
+sfx_hit = pygame.mixer.Sound('./assets/Sounds/Son3.wav')
 
 #initialise webcam if actived in config.ini
 if active_webcam:
@@ -341,7 +291,7 @@ if active_webcam:
         from Scripts.opencvcam import Cam
         print("activating webcam")
         mycam = Cam()
-        mycam.update(mycam.cap, mycam.mp_drawing,mycam.mp_pose, mycam.LimiteBasseCamera, mycam.LimiteHauteCamera, mycam.LimiteGaucheCamera, mycam.LimiteDroiteCamera)
+        mycam.update()
         
         
         if mycam.webcam_compatibility == True:
@@ -355,8 +305,8 @@ if active_webcam:
         else:
             webcam_zone_interdite = False
             ingamebackground.image = ingamebackground.images[0]
-    except:
-        print("cam unsuported. CPU is too old")
+    except Exception as e:
+        print(f"Webcam/MediaPipe error: {e}")
         webcam_compatibility = False
         webcam_zone_interdite = False
         ingamebackground.image = ingamebackground.images[0]
@@ -387,8 +337,8 @@ if background_music == True:
     channel1.play(music)
 
 while time_left >= 0:
-    
-    
+
+    ecran.fill(white)
     countdown()
     logo_width, logo_height = logo.image.get_rect().size
     logo.image = pygame.transform.scale(logo.image, (logo.img_width*LARGEUR_ECRAN/1920,logo.img_height*HAUTEUR_ECRAN/1080))
@@ -458,7 +408,7 @@ while continuer:
                         
         
         introbackground.update()
-        
+
         ecran.blit(introbackground.image, introbackground.rect)
         
 
@@ -488,15 +438,18 @@ while continuer:
             ecran.blit(Animation4.image, (LARGEUR_ECRAN*16/20-Animation4.res_img_width/2, HAUTEUR_ECRAN*9/20-Animation4.res_img_height/2 ))
            
         else:
-            channel1.fadeout(9000)
+            if not music_fadeout_started:
+                channel1.fadeout(9000)
+                music_fadeout_started = True
             countdown()
             draw_intro_text()
             if time_left <= 0:
+                music_fadeout_started = False
                 credit_left = credit_left-1
                 if background_music == True:
                     music = pygame.mixer.Sound('./assets/Sounds/Boules Under the Sun.mp3')
                     channel1.play(music, loops = -1)
-                   
+
                 next_gamestate()
 
         #    if webcam_compatibility == True:
@@ -523,7 +476,7 @@ while continuer:
         
         
         if webcam_compatibility == True:
-            mycam.update(mycam.cap, mycam.mp_drawing,mycam.mp_pose, mycam.LimiteBasseCamera, mycam.LimiteHauteCamera, mycam.LimiteGaucheCamera, mycam.LimiteDroiteCamera)
+            mycam.update()
             showcam()
             webcam_zone_interdite = mycam.zoneinterdite
             ecran.blit(ingamebackground.image, ingamebackground.rect)
@@ -646,9 +599,9 @@ while continuer:
                 
         
         if score >= high_score:
-            
             high_score = score
-        
+            save_high_score(high_score)
+
         ecran.blit(ingamebackground.image, ingamebackground.rect)
 
         draw_ending_text()
@@ -673,4 +626,4 @@ while continuer:
     
     
 
-pygame.quit
+pygame.quit()
